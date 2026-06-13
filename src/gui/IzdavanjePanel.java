@@ -1,0 +1,226 @@
+package gui;
+
+import java.awt.BorderLayout;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import korisnici.Agent;
+import podaci.CenovniciPodaci;
+import podaci.DodatneUslugePodaci;
+import podaci.IzdavanjePodaci;
+import podaci.RezervacijePodaci;
+import podaci.VozilaPodaci;
+import rezervacija.Rezervacija;
+import rezervacija.StatusRezervacije;
+
+public class IzdavanjePanel extends JPanel {
+
+	private RezervacijePodaci rp;
+	private IzdavanjePodaci ip;
+	private VozilaPodaci vp;
+	private DodatneUslugePodaci dup;
+	private CenovniciPodaci cp;
+	private Agent ulogovaniAgent;
+	private JTable tabela;
+	private DefaultTableModel tableModel;
+
+	public IzdavanjePanel(RezervacijePodaci rp, IzdavanjePodaci ip, VozilaPodaci vp, DodatneUslugePodaci dup, CenovniciPodaci cp, Agent ulogovaniAgent) {
+		this.rp = rp;
+		this.ip = ip;
+		this.vp = vp;
+		this.dup = dup;
+		this.cp = cp;
+		this.ulogovaniAgent = ulogovaniAgent;
+		
+		setLayout(new BorderLayout()); 
+		
+		String[] kolone = {"ID Rez.", "Klijent", "Vozilo", "Datum Od - Do", "Ukupna Cena"};
+		tableModel = new DefaultTableModel(kolone, 0); 
+		tabela = new JTable(tableModel);
+		
+		osveziTabelu();
+		
+		JScrollPane scrollPane = new JScrollPane(tabela);
+		add(scrollPane, BorderLayout.CENTER); 
+		
+		JPanel panelDugmici = new JPanel();
+		JButton btnIzdaj = new JButton("Izdaj Vozilo");
+		
+		panelDugmici.add(btnIzdaj);
+		add(panelDugmici, BorderLayout.SOUTH);
+		
+		btnIzdaj.addActionListener(e -> izdajVozilo());
+	}
+	
+	private void izdajVozilo() {
+		int selektovaniRed = tabela.getSelectedRow();
+		if (selektovaniRed == -1) {
+			JOptionPane.showMessageDialog(this, "Morate selektovati odobrenu rezervaciju!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
+		int idRezervacije = (int) tableModel.getValueAt(selektovaniRed, 0);
+		Rezervacija r = rp.pronadjiRezervaciju(idRezervacije);
+		
+		if (r != null) {
+			
+			// 1. Nalazimo sve slobodne primerke tog Modela za taj period, uključujući i ovaj koji je inicijalno "zauzet" za njega
+			java.util.ArrayList<vozila.Vozilo> slobodniPrimerci = new java.util.ArrayList<>();
+			for (vozila.Vozilo v : vp.getVozila()) {
+				if (v.getModelVozila().getId() == r.getVozilo().getModelVozila().getId()) {
+					if (rp.daLiJeVoziloSlobodno(v, r.getDatumPocetka(), r.getDatumKraja()) || v.getId() == r.getVozilo().getId()) {
+						slobodniPrimerci.add(v);
+					}
+				}
+			}
+			
+			if (slobodniPrimerci.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Nema slobodnih primeraka za izdavanje!", "Greška", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			String[] opcijePrimeraka = new String[slobodniPrimerci.size()];
+			for (int i=0; i<slobodniPrimerci.size(); i++) {
+				vozila.Vozilo v = slobodniPrimerci.get(i);
+				opcijePrimeraka[i] = v.getRegistarskeTablice();
+			}
+			
+			// Agent bira konkretan primerak (po zahtevu iz specifikacije)
+			String izabraniPrimerakStr = (String) JOptionPane.showInputDialog(
+					this, 
+					"Izaberite konkretan primerak za izdavanje:", 
+					"Odabir primerka", 
+					JOptionPane.QUESTION_MESSAGE, 
+					null, 
+					opcijePrimeraka, 
+					opcijePrimeraka[0]
+			);
+			
+			if (izabraniPrimerakStr == null) return;
+			
+			int indeksPrimerka = -1;
+			for (int i=0; i<opcijePrimeraka.length; i++) {
+				if (opcijePrimeraka[i].equals(izabraniPrimerakStr)) {
+					indeksPrimerka = i; break;
+				}
+			}
+			
+			vozila.Vozilo konacnoIzabranoVozilo = slobodniPrimerci.get(indeksPrimerka);
+			
+			String unos = JOptionPane.showInputDialog(this, "Unesite početnu kilometražu vozila (" + konacnoIzabranoVozilo.getRegistarskeTablice() + "):");
+			if (unos != null && !unos.trim().isEmpty()) {
+				try {
+					double pocetnaK = Double.parseDouble(unos);
+					if (pocetnaK < 0) {
+						JOptionPane.showMessageDialog(this, "Kilometraža ne može biti negativna!", "Greška", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
+					Object[] opcijeDaNe = {"Da", "Ne"};
+					int odzivUsluge = JOptionPane.showOptionDialog(this, "Da li klijent želi da doda neku dodatnu uslugu?", "Dodatne Usluge", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opcijeDaNe, opcijeDaNe[0]);
+					if (odzivUsluge == 0) {
+						java.util.ArrayList<String> opcije = new java.util.ArrayList<>();
+						java.util.ArrayList<rezervacija.DodatnaUsluga> dostupne = new java.util.ArrayList<>();
+						cenovnik.Cenovnik danasnjiCenovnik = cp.pronadjiVazeciCenovnik(java.time.LocalDate.now());
+						
+						for (rezervacija.DodatnaUsluga du : dup.getUsluge()) {
+							boolean vecIma = false;
+							for (rezervacija.DodatnaUsluga postojeca : r.getDodatneUsluge()) {
+								if (postojeca.getId() == du.getId()) vecIma = true;
+							}
+							if (!vecIma) {
+								double cenaDanas = 0.0;
+								if (danasnjiCenovnik != null && danasnjiCenovnik.getCeneDodatnihUsluga() != null && danasnjiCenovnik.getCeneDodatnihUsluga().containsKey(du.getId())) {
+									cenaDanas = danasnjiCenovnik.getCeneDodatnihUsluga().get(du.getId());
+								}
+								opcije.add(du.getDodatnaUsluga() + " (" + cenaDanas + " RSD)");
+								dostupne.add(du);
+							}
+						}
+						
+						if (!opcije.isEmpty()) {
+							javax.swing.JList<String> lista = new javax.swing.JList<>(opcije.toArray(new String[0]));
+							lista.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+							JOptionPane.showMessageDialog(this, new JScrollPane(lista), "Izaberite usluge (Držite CTRL za više)", JOptionPane.PLAIN_MESSAGE);
+							
+							int[] sel = lista.getSelectedIndices();
+							if (sel.length > 0) {
+								for (int idx : sel) {
+									rezervacija.DodatnaUsluga novaUsluga = dostupne.get(idx);
+									r.getDodatneUsluge().add(novaUsluga);
+									
+									double cenaDanas = 0.0;
+									if (danasnjiCenovnik != null && danasnjiCenovnik.getCeneDodatnihUsluga() != null && danasnjiCenovnik.getCeneDodatnihUsluga().containsKey(novaUsluga.getId())) {
+										cenaDanas = danasnjiCenovnik.getCeneDodatnihUsluga().get(novaUsluga.getId());
+									}
+									
+									String imeUsluge = novaUsluga.getDodatnaUsluga().toLowerCase();
+									if (imeUsluge.contains("produženo") || imeUsluge.contains("produzeno")) {
+										podaci.Podesavanja p = new podaci.Podesavanja();
+										p.ucitaj();
+										long podrazumevano = p.getPodrazumevanoTrajanjeNajma();
+										long brojDana = java.time.temporal.ChronoUnit.DAYS.between(r.getDatumPocetka(), r.getDatumKraja());
+										long dodatniDani = brojDana - podrazumevano;
+										if (dodatniDani > 0) {
+											r.setUkupnaCena(r.getUkupnaCena() + (cenaDanas * dodatniDani));
+										}
+									} else {
+										r.setUkupnaCena(r.getUkupnaCena() + cenaDanas);
+									}
+								}
+							}
+						} else {
+							JOptionPane.showMessageDialog(this, "Sve dostupne usluge su već izabrane.");
+						}
+					}
+					
+					// Zamenjujemo vozilo u rezervaciji ukoliko je agent odabrao neki drugi primerak
+					if (r.getVozilo().getId() != konacnoIzabranoVozilo.getId()) {
+						// Oslobađamo staro
+						r.getVozilo().setStatusVozila(vozila.StatusVozila.RASPOLOZIVO);
+						// Dodeljujemo novo
+						r.setVozilo(konacnoIzabranoVozilo);
+					}
+					
+					// Menjamo status u REALIZOVANA
+					r.setStatusRezervacije(StatusRezervacije.REALIZOVANA);
+					rp.sacuvajIzmene();
+					
+					// Izdavanje automatski menja status vozila u IZNAJMLJENO
+					ip.izdajVozilo(r, ulogovaniAgent, pocetnaK);
+					
+					JOptionPane.showMessageDialog(this, "Vozilo uspešno izdato klijentu!");
+					osveziTabelu();
+					
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(this, "Morate uneti validan broj za kilometražu!", "Greška", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+	}
+	
+	private void osveziTabelu() {
+		tableModel.setRowCount(0);
+		for (Rezervacija r : rp.getRezervacije()) {
+			// Prikazujemo SAMO rezervacije koje su ODOBRENE i spremne za izdavanje
+			if (r.getStatusRezervacije() == StatusRezervacije.ODOBRENA) {
+				String klijentInfo = r.getKlijent().getIme() + " " + r.getKlijent().getPrezime();
+				String voziloInfo = r.getVozilo().getModelVozila().getMarkaVozila() + " " + r.getVozilo().getModelVozila().getNazivModela();
+				String period = r.getDatumPocetka() + " do " + r.getDatumKraja();
+				
+				Object[] red = { 
+					r.getId(), 
+					klijentInfo, 
+					voziloInfo, 
+					period, 
+					r.getUkupnaCena()
+				};
+				tableModel.addRow(red);
+			}
+		}
+	}
+}
