@@ -1,4 +1,8 @@
 package gui;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import podaci.Podesavanja;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -67,56 +71,56 @@ public class GlavniProzor extends JFrame {
 	}
 
 	private void kreirajMeni() {
-		javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+		JMenuBar menuBar = new JMenuBar();
 
 		if (ulogovaniKorisnik instanceof Administrator) {
-			javax.swing.JMenu adminMenu = new javax.swing.JMenu("Administracija");
+			JMenu adminMenu = new JMenu("Administracija");
 
-			javax.swing.JMenuItem korisniciItem = new javax.swing.JMenuItem("Zaposleni");
+			JMenuItem korisniciItem = new JMenuItem("Zaposleni");
 			korisniciItem.addActionListener(e -> {
 				KorisniciPanel kpPanel = new KorisniciPanel(kp, ulogovaniKorisnik);
 				prikaziPanel(kpPanel);
 			});
 			adminMenu.add(korisniciItem);
 
-			javax.swing.JMenuItem izvestajiItem = new javax.swing.JMenuItem("Izveštaji");
+			JMenuItem izvestajiItem = new JMenuItem("Izveštaji");
 			izvestajiItem.addActionListener(e -> {
 				IzvestajiPanel izp = new IzvestajiPanel(ip, rp, mp, kp, pp, cp);
 				prikaziPanel(izp);
 			});
 			adminMenu.add(izvestajiItem);
 
-			javax.swing.JMenuItem grafikoniItem = new javax.swing.JMenuItem("Grafikoni (XChart)");
+			JMenuItem grafikoniItem = new JMenuItem("Grafikoni (XChart)");
 			grafikoniItem.addActionListener(e -> {
 				GrafikoniPanel gp = new GrafikoniPanel(ip, rp, pp, kp);
 				prikaziPanel(gp);
 			});
 			adminMenu.add(grafikoniItem);
 
-			javax.swing.JMenuItem vozilaItem = new javax.swing.JMenuItem("Vozila");
+			JMenuItem vozilaItem = new JMenuItem("Vozila");
 			vozilaItem.addActionListener(e -> {
 				VozilaPanel vpPanel = new VozilaPanel(vp, mp, ulogovaniKorisnik);
 				prikaziPanel(vpPanel);
 			});
 			adminMenu.add(vozilaItem);
 
-			javax.swing.JMenuItem uslugeItem = new javax.swing.JMenuItem("Dodatne Usluge");
+			JMenuItem uslugeItem = new JMenuItem("Dodatne Usluge");
 			uslugeItem.addActionListener(e -> {
 				UslugePanel upPanel = new UslugePanel(dup);
 				prikaziPanel(upPanel);
 			});
 			adminMenu.add(uslugeItem);
 
-			javax.swing.JMenuItem cenovniciItem = new javax.swing.JMenuItem("Cenovnici");
+			JMenuItem cenovniciItem = new JMenuItem("Cenovnici");
 			cenovniciItem.addActionListener(e -> {
 				CenovnikPanel cpPanel = new CenovnikPanel(cp, dup);
 				prikaziPanel(cpPanel);
 			});
 			adminMenu.add(cenovniciItem);
 
-			javax.swing.JMenuItem podesavanjaItem = new javax.swing.JMenuItem("Podešavanja");
+			JMenuItem podesavanjaItem = new JMenuItem("Podešavanja");
 			podesavanjaItem.addActionListener(e -> {
-				podaci.Podesavanja pod = new podaci.Podesavanja();
+				Podesavanja pod = new Podesavanja();
 				pod.ucitaj();
 				PodesavanjaPanel podPanel = new PodesavanjaPanel(pod);
 				prikaziPanel(podPanel);
@@ -126,44 +130,44 @@ public class GlavniProzor extends JFrame {
 			menuBar.add(adminMenu);
 
 		} else if (ulogovaniKorisnik instanceof Agent) {
-			javax.swing.JMenu agentMenu = new javax.swing.JMenu("Radna tabla (Agent)");
+			JMenu agentMenu = new JMenu("Radna tabla (Agent)");
 
-			javax.swing.JMenuItem klijentiItem = new javax.swing.JMenuItem("Klijenti");
+			JMenuItem klijentiItem = new JMenuItem("Klijenti");
 			klijentiItem.addActionListener(e -> {
 				KorisniciPanel kpPanel = new KorisniciPanel(kp, ulogovaniKorisnik);
 				prikaziPanel(kpPanel);
 			});
 			agentMenu.add(klijentiItem);
 
-			javax.swing.JMenuItem pretplateItem = new javax.swing.JMenuItem("Pretplate");
+			JMenuItem pretplateItem = new JMenuItem("Pretplate");
 			pretplateItem.addActionListener(e -> {
 				PretplatePanel ppPanel = new PretplatePanel(pp);
 				prikaziPanel(ppPanel);
 			});
 			agentMenu.add(pretplateItem);
 
-			javax.swing.JMenuItem rezervacijeItem = new javax.swing.JMenuItem("Rezervacije");
+			JMenuItem rezervacijeItem = new JMenuItem("Rezervacije");
 			rezervacijeItem.addActionListener(e -> {
 				RezervacijePanel rpPanel = new RezervacijePanel(rp);
 				prikaziPanel(rpPanel);
 			});
 			agentMenu.add(rezervacijeItem);
 
-			javax.swing.JMenuItem izdavanjeItem = new javax.swing.JMenuItem("Izdavanje Vozila");
+			JMenuItem izdavanjeItem = new JMenuItem("Izdavanje Vozila");
 			izdavanjeItem.addActionListener(e -> {
 				IzdavanjePanel ipan = new IzdavanjePanel(rp, ip, vp, dup, cp, (Agent) ulogovaniKorisnik);
 				prikaziPanel(ipan);
 			});
 			agentMenu.add(izdavanjeItem);
 
-			javax.swing.JMenuItem vracanjeItem = new javax.swing.JMenuItem("Vraćanje Vozila");
+			JMenuItem vracanjeItem = new JMenuItem("Vraćanje Vozila");
 			vracanjeItem.addActionListener(e -> {
 				VracanjePanel vpPanel = new VracanjePanel(ip, rp, kp, cp);
 				prikaziPanel(vpPanel);
 			});
 			agentMenu.add(vracanjeItem);
 
-			javax.swing.JMenuItem vozilaItem = new javax.swing.JMenuItem("Vozila");
+			JMenuItem vozilaItem = new JMenuItem("Vozila");
 			vozilaItem.addActionListener(e -> {
 				VozilaPanel vpPanel = new VozilaPanel(vp, mp, ulogovaniKorisnik);
 				prikaziPanel(vpPanel);
@@ -173,23 +177,23 @@ public class GlavniProzor extends JFrame {
 			menuBar.add(agentMenu);
 
 		} else if (ulogovaniKorisnik instanceof Klijent) {
-			javax.swing.JMenu klijentMenu = new javax.swing.JMenu("Klijentski Portal");
+			JMenu klijentMenu = new JMenu("Klijentski Portal");
 
-			javax.swing.JMenuItem novaRezItem = new javax.swing.JMenuItem("Nova Rezervacija");
+			JMenuItem novaRezItem = new JMenuItem("Nova Rezervacija");
 			novaRezItem.addActionListener(e -> {
 				KlijentRezervacijaPanel krp = new KlijentRezervacijaPanel(rp, mp, vp, dup, cp, pp, (Klijent) ulogovaniKorisnik);
 				prikaziPanel(krp);
 			});
 			klijentMenu.add(novaRezItem);
 
-			javax.swing.JMenuItem mojeRezItem = new javax.swing.JMenuItem("Moje Rezervacije");
+			JMenuItem mojeRezItem = new JMenuItem("Moje Rezervacije");
 			mojeRezItem.addActionListener(e -> {
 				KlijentMojeRezervacijePanel kmrp = new KlijentMojeRezervacijePanel(rp, kp, cp, (Klijent) ulogovaniKorisnik);
 				prikaziPanel(kmrp);
 			});
 			klijentMenu.add(mojeRezItem);
 
-			javax.swing.JMenuItem mojaPretplataItem = new javax.swing.JMenuItem("Moja Pretplata");
+			JMenuItem mojaPretplataItem = new JMenuItem("Moja Pretplata");
 			mojaPretplataItem.addActionListener(e -> {
 				KlijentPretplataPanel kpp = new KlijentPretplataPanel(pp, (Klijent) ulogovaniKorisnik);
 				prikaziPanel(kpp);
@@ -199,8 +203,8 @@ public class GlavniProzor extends JFrame {
 			menuBar.add(klijentMenu);
 		}
 
-		javax.swing.JMenu opcijeMenu = new javax.swing.JMenu("Opcije");
-		javax.swing.JMenuItem odjavaItem = new javax.swing.JMenuItem("Odjavi se");
+		JMenu opcijeMenu = new JMenu("Opcije");
+		JMenuItem odjavaItem = new JMenuItem("Odjavi se");
 		odjavaItem.addActionListener(e -> {
 			this.dispose();
 			LoginProzor lp = new LoginProzor(kp, mp, vp, dup, cp, rp, ip, pp);

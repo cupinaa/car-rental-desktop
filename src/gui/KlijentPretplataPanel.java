@@ -1,4 +1,5 @@
 package gui;
+import korisnici.StatusPretplate;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -34,9 +35,9 @@ public class KlijentPretplataPanel extends JPanel {
 
 		setLayout(new BorderLayout());
 
-		JPanel centerPanel = new JPanel(new java.awt.GridBagLayout());
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.insets = new java.awt.Insets(10, 10, 10, 10);
+		JPanel centerPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 
@@ -73,7 +74,7 @@ public class KlijentPretplataPanel extends JPanel {
 			lblStatus.setText("Status: " + p.getStatus());
 			lblIstek.setText("Važi do: " + p.getDatumIsteka());
 
-			if (p.getStatus() == korisnici.StatusPretplate.AKTIVNA || p.getStatus() == korisnici.StatusPretplate.CEKA_ODOBRENJE) {
+			if (p.getStatus() == StatusPretplate.AKTIVNA || p.getStatus() == StatusPretplate.CEKA_ODOBRENJE) {
 				btnPodnesi.setEnabled(false);
 			} else {
 				btnPodnesi.setEnabled(true);
@@ -96,8 +97,8 @@ public class KlijentPretplataPanel extends JPanel {
 		if (odziv == 0) {
 			pp.podnesiZahtevZaPretplatu(klijent);
 
-			korisnici.Pretplata azurirana = pp.pronadjiPretplatuZaKlijenta(klijent.getId());
-			if (azurirana != null && azurirana.getStatus() == korisnici.StatusPretplate.ODBIJENA) {
+			Pretplata azurirana = pp.pronadjiPretplatuZaKlijenta(klijent.getId());
+			if (azurirana != null && azurirana.getStatus() == StatusPretplate.ODBIJENA) {
 				JOptionPane.showMessageDialog(this, "Vaš zahtev je AUTOMATSKI ODBIJEN zbog prevelikog broja kašnjenja (" + klijent.getBrojKasnjenja() + ")!", "Zahtev odbijen", JOptionPane.ERROR_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(this, "Zahtev je uspešno podnet! Očekujte odobrenje od strane agenta.");

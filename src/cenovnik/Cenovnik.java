@@ -1,4 +1,5 @@
 package cenovnik;
+import java.util.Map;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,11 +17,11 @@ public class Cenovnik {
 	protected double popustPenzioner; 
 	protected double iznosKazne;
 
-	protected java.util.Map<Integer, Double> ceneDodatnihUsluga;
+	protected Map<Integer, Double> ceneDodatnihUsluga;
 
 	public Cenovnik(int id, LocalDate pocetakVazenja, LocalDate krajVazenja,
 			ArrayList<StavkaCenovnika> stavkeCenovnika, double cenaPretplate, 
-			double popustStudent, double popustFirma, double popustPenzioner, double iznosKazne, java.util.Map<Integer, Double> ceneDodatnihUsluga) {
+			double popustStudent, double popustFirma, double popustPenzioner, double iznosKazne, Map<Integer, Double> ceneDodatnihUsluga) {
 		this.id = id;
 		this.pocetakVazenja = pocetakVazenja;
 		this.krajVazenja = krajVazenja;
@@ -34,7 +35,7 @@ public class Cenovnik {
 	}
 
 	public Cenovnik(LocalDate pocetakVazenja, LocalDate krajVazenja, ArrayList<StavkaCenovnika> stavkeCenovnika,
-			double cenaPretplate, double popustStudent, double popustFirma, double popustPenzioner, double iznosKazne, java.util.Map<Integer, Double> ceneDodatnihUsluga) {
+			double cenaPretplate, double popustStudent, double popustFirma, double popustPenzioner, double iznosKazne, Map<Integer, Double> ceneDodatnihUsluga) {
 		this.pocetakVazenja = pocetakVazenja;
 		this.krajVazenja = krajVazenja;
 		this.stavkeCenovnika = stavkeCenovnika;
@@ -118,11 +119,11 @@ public class Cenovnik {
 		this.iznosKazne = iznosKazne;
 	}
 
-	public java.util.Map<Integer, Double> getCeneDodatnihUsluga() {
+	public Map<Integer, Double> getCeneDodatnihUsluga() {
 		return ceneDodatnihUsluga;
 	}
 
-	public void setCeneDodatnihUsluga(java.util.Map<Integer, Double> ceneDodatnihUsluga) {
+	public void setCeneDodatnihUsluga(Map<Integer, Double> ceneDodatnihUsluga) {
 		this.ceneDodatnihUsluga = ceneDodatnihUsluga;
 	}
 

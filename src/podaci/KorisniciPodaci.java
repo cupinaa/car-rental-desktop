@@ -1,4 +1,5 @@
 package podaci;
+import java.time.LocalDateTime;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -65,7 +66,7 @@ public class KorisniciPodaci {
 				}
 
 				if (delovi.length > 12 && !delovi[12].isEmpty() && !delovi[12].equals("null")) {
-					klijent.setZabranaRezervisanjaDo(java.time.LocalDateTime.parse(delovi[12]));
+					klijent.setZabranaRezervisanjaDo(LocalDateTime.parse(delovi[12]));
 				}
 
 				if (delovi.length > 13 && !delovi[13].isEmpty() && !delovi[13].equals("null")) {

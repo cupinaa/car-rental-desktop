@@ -1,4 +1,5 @@
 package podaci;
+import korisnici.StrucnaSprema;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,13 +47,13 @@ public class DemoDataGenerator {
             ip.getIzdavanja().clear();
 
 
-            Administrator admin = new Administrator(1, "Admin", "Adminovic", Pol.Muski, LocalDate.of(1980, 1, 1), "060111111", "Adresa 1", "admin", "admin", korisnici.StrucnaSprema.VSS, 10, 100000);
+            Administrator admin = new Administrator(1, "Admin", "Adminovic", Pol.Muski, LocalDate.of(1980, 1, 1), "060111111", "Adresa 1", "admin", "admin", StrucnaSprema.VSS, 10, 100000);
             kp.getKorisnici().add(admin);
 
-            Agent agentAna = new Agent(2, "Ana", "Anic", Pol.Zenski, LocalDate.of(1990, 5, 5), "060222222", "Adresa 2", "agentAna", "123", korisnici.StrucnaSprema.SSS, 5, 50000);
+            Agent agentAna = new Agent(2, "Ana", "Anic", Pol.Zenski, LocalDate.of(1990, 5, 5), "060222222", "Adresa 2", "agentAna", "123", StrucnaSprema.SSS, 5, 50000);
             kp.getKorisnici().add(agentAna);
 
-            Agent agentMarko = new Agent(3, "Marko", "Markovic", Pol.Muski, LocalDate.of(1985, 3, 3), "060333333", "Adresa 3", "agentMarko", "123", korisnici.StrucnaSprema.MAGISTAR, 8, 60000);
+            Agent agentMarko = new Agent(3, "Marko", "Markovic", Pol.Muski, LocalDate.of(1985, 3, 3), "060333333", "Adresa 3", "agentMarko", "123", StrucnaSprema.MAGISTAR, 8, 60000);
             kp.getKorisnici().add(agentMarko);
 
             Klijent kStudent = new Klijent(4, "Student", "Studentovic", Pol.Muski, LocalDate.of(2000, 1, 1), "06111", "St 1", "student@gmail.com", "123", LocalDate.of(2018, 1, 1), KategorijaKlijenata.STUDENT);

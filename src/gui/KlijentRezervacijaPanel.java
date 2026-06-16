@@ -1,4 +1,7 @@
 package gui;
+import java.awt.GridLayout;
+import java.time.temporal.ChronoUnit;
+import podaci.Podesavanja;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -91,7 +94,7 @@ public class KlijentRezervacijaPanel extends JPanel {
 	}
 
 	private void kreirajTopFilterPanel() {
-		JPanel filterPanel = new JPanel(new java.awt.GridLayout(3, 4, 5, 5));
+		JPanel filterPanel = new JPanel(new GridLayout(3, 4, 5, 5));
 
 		filterPanel.add(new JLabel("Proizvođač (Marka):"));
 		txtMarka = new JTextField();
@@ -149,7 +152,7 @@ public class KlijentRezervacijaPanel extends JPanel {
 		rightPanel.setPreferredSize(new Dimension(250, 0));
 
 		String[] naziviUsluga = new String[dup.getUsluge().size()];
-		cenovnik.Cenovnik cDanas = cp.pronadjiVazeciCenovnik(java.time.LocalDate.now());
+		Cenovnik cDanas = cp.pronadjiVazeciCenovnik(LocalDate.now());
 		for (int i = 0; i < dup.getUsluge().size(); i++) {
 			DodatnaUsluga du = dup.getUsluge().get(i);
 			double cenaUsluge = 0.0;
@@ -230,8 +233,8 @@ public class KlijentRezervacijaPanel extends JPanel {
 			LocalDate pocetak = LocalDate.parse(txtDatumOd.getText());
 			LocalDate kraj = LocalDate.parse(txtDatumDo.getText());
 
-			long brojDana = java.time.temporal.ChronoUnit.DAYS.between(pocetak, kraj);
-			podaci.Podesavanja pod = new podaci.Podesavanja();
+			long brojDana = ChronoUnit.DAYS.between(pocetak, kraj);
+			Podesavanja pod = new Podesavanja();
 			pod.ucitaj();
 			long maxDana = pod.getPodrazumevanoTrajanjeNajma();
 
@@ -247,7 +250,7 @@ public class KlijentRezervacijaPanel extends JPanel {
 			}
 
 			if (!imaProduzeno && brojDana > maxDana) {
-				javax.swing.JOptionPane.showMessageDialog(this, "Trajanje najma je standardno ograničeno na " + maxDana + " dana.\nIzaberite uslugu produženog korišćenja ako želite da zadržite vozilo duže.", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Trajanje najma je standardno ograničeno na " + maxDana + " dana.\nIzaberite uslugu produženog korišćenja ako želite da zadržite vozilo duže.", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 
@@ -257,7 +260,7 @@ public class KlijentRezervacijaPanel extends JPanel {
 
 			Vozilo slobodnoVozilo = rp.pronadjiSlobodnoVoziloZaModel(model, vp, pocetak, kraj);
 			if (slobodnoVozilo == null) {
-				javax.swing.JOptionPane.showMessageDialog(this, "U međuvremenu je vozilo zauzeto, osvežite pretragu.", "Greška", javax.swing.JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "U međuvremenu je vozilo zauzeto, osvežite pretragu.", "Greška", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 

@@ -1,4 +1,5 @@
 package gui;
+import java.util.Locale;
 
 import java.awt.GridLayout;
 import java.time.LocalDate;
@@ -132,7 +133,7 @@ public class KorisnikForma extends JDialog {
 
 
 			double obrnutaOsnova = z.getPlata() / (z.getStrucnaSprema().getKoeficijent() + 0.004 * z.getGodineStaza());
-			txtOsnova.setText(String.format(java.util.Locale.US, "%.2f", obrnutaOsnova)); 
+			txtOsnova.setText(String.format(Locale.US, "%.2f", obrnutaOsnova)); 
 		}
 	}
 

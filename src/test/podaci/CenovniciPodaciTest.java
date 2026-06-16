@@ -1,4 +1,6 @@
 package test.podaci;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -44,7 +46,7 @@ public class CenovniciPodaciTest {
 	public void testDodajCenovnik() {
 		ArrayList<StavkaCenovnika> stavke = new ArrayList<>();
 		stavke.add(new StavkaCenovnika(KategorijaVozila.ECONOMY, 2000.0));
-		Cenovnik c = new Cenovnik(LocalDate.now(), LocalDate.now().plusMonths(1), stavke, 10000.0, 0.1, 0.15, 0.2, 500.0, new java.util.HashMap<>());
+		Cenovnik c = new Cenovnik(LocalDate.now(), LocalDate.now().plusMonths(1), stavke, 10000.0, 0.1, 0.15, 0.2, 500.0, new HashMap<>());
 
 		int staraVelicina = cp.getCenovnici().size();
 		cp.dodajCenovnik(c);
@@ -56,7 +58,7 @@ public class CenovniciPodaciTest {
 	@Test
 	public void testPronadjiCenovnik() {
 		ArrayList<StavkaCenovnika> stavke = new ArrayList<>();
-		Cenovnik c = new Cenovnik(LocalDate.now(), LocalDate.now().plusMonths(1), stavke, 10000.0, 0.1, 0.15, 0.2, 500.0, new java.util.HashMap<>());
+		Cenovnik c = new Cenovnik(LocalDate.now(), LocalDate.now().plusMonths(1), stavke, 10000.0, 0.1, 0.15, 0.2, 500.0, new HashMap<>());
 		cp.dodajCenovnik(c);
 
 		Cenovnik pronadjeni = cp.pronadjiCenovnik(c.getId());
@@ -71,8 +73,8 @@ public class CenovniciPodaciTest {
 	public void testPronadjiVazeciCenovnik() {
 		ArrayList<StavkaCenovnika> stavke = new ArrayList<>();
 
-		Cenovnik aktivan = new Cenovnik(LocalDate.now().minusDays(10), LocalDate.now().plusDays(10), stavke, 1000.0, 0.0, 0.0, 0.0, 100.0, new java.util.HashMap<>());
-		Cenovnik buduci = new Cenovnik(LocalDate.now().plusDays(20), LocalDate.now().plusDays(30), stavke, 2000.0, 0.0, 0.0, 0.0, 100.0, new java.util.HashMap<>());
+		Cenovnik aktivan = new Cenovnik(LocalDate.now().minusDays(10), LocalDate.now().plusDays(10), stavke, 1000.0, 0.0, 0.0, 0.0, 100.0, new HashMap<>());
+		Cenovnik buduci = new Cenovnik(LocalDate.now().plusDays(20), LocalDate.now().plusDays(30), stavke, 2000.0, 0.0, 0.0, 0.0, 100.0, new HashMap<>());
 
 		cp.dodajCenovnik(aktivan);
 		cp.dodajCenovnik(buduci);
@@ -97,7 +99,7 @@ public class CenovniciPodaciTest {
 		StavkaCenovnika st = new StavkaCenovnika(1, KategorijaVozila.ECONOMY, 3000.0);
 		stavke.add(st);
 
-		java.util.Map<Integer, Double> ceneUsluga = new java.util.HashMap<>();
+		Map<Integer, Double> ceneUsluga = new HashMap<>();
 		ceneUsluga.put(1, 500.0);
 
 		Cenovnik c = new Cenovnik(1, LocalDate.of(2025, 1, 1), LocalDate.of(2025, 12, 31), stavke, 20000.0, 0.1, 0.2, 0.3, 1500.0, ceneUsluga);

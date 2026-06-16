@@ -1,4 +1,5 @@
 package gui;
+import java.time.temporal.ChronoUnit;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -79,7 +80,7 @@ public class GrafikoniPanel extends JPanel {
 		for (Izdavanje i : ip.getIzdavanja()) {
 			LocalDate datum = i.getRezervacija().getDatumPocetka();
 			if (!datum.isBefore(start)) {
-				int index = (int) java.time.temporal.ChronoUnit.MONTHS.between(start.withDayOfMonth(1), datum.withDayOfMonth(1));
+				int index = (int) ChronoUnit.MONTHS.between(start.withDayOfMonth(1), datum.withDayOfMonth(1));
 				if (index >= 0 && index < 12) {
 					double cena = i.getRezervacija().getUkupnaCena();
 					ukupnoData[index] += cena;

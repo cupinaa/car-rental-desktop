@@ -1,4 +1,6 @@
 package podaci;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -32,9 +34,9 @@ public class CenovniciPodaci {
 				double popustFirma = Double.parseDouble(delovi[5]);
 				double popustPenzioner = Double.parseDouble(delovi[6]);
 				double iznosKazne = Double.parseDouble(delovi[7]);
-				c = new Cenovnik(id, pocetak, kraj, new ArrayList<StavkaCenovnika>(), cenaPretplate, popustStudent, popustFirma, popustPenzioner, iznosKazne, new java.util.HashMap<>());
+				c = new Cenovnik(id, pocetak, kraj, new ArrayList<StavkaCenovnika>(), cenaPretplate, popustStudent, popustFirma, popustPenzioner, iznosKazne, new HashMap<>());
 			} else {
-				c = new Cenovnik(id, pocetak, kraj, new ArrayList<StavkaCenovnika>(), 5000.0, 0.10, 0.25, 0.15, 2000.0, new java.util.HashMap<>());
+				c = new Cenovnik(id, pocetak, kraj, new ArrayList<StavkaCenovnika>(), 5000.0, 0.10, 0.25, 0.15, 2000.0, new HashMap<>());
 			}
 			cenovnici.add(c);
 		}
@@ -89,7 +91,7 @@ public class CenovniciPodaci {
 				pwS.println(s.getId() + "|" + c.getId() + "|" + s.getKategorijaVozila() + "|" + s.getCenaPoDanu());
 			}
 			if (c.getCeneDodatnihUsluga() != null) {
-				for (java.util.Map.Entry<Integer, Double> entry : c.getCeneDodatnihUsluga().entrySet()) {
+				for (Map.Entry<Integer, Double> entry : c.getCeneDodatnihUsluga().entrySet()) {
 					pwU.println(c.getId() + "|" + entry.getKey() + "|" + entry.getValue());
 				}
 			}

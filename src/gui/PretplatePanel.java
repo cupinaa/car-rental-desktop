@@ -1,4 +1,6 @@
 package gui;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 import javax.swing.JButton;
@@ -45,7 +47,7 @@ public class PretplatePanel extends JPanel {
 	private void promeniStatus(StatusPretplate noviStatus) {
 		int selektovaniRed = tabela.getSelectedRow();
 		if (selektovaniRed == -1) {
-			javax.swing.JOptionPane.showMessageDialog(this, "Morate prvo selektovati pretplatu iz tabele!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Morate prvo selektovati pretplatu iz tabele!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
@@ -54,7 +56,7 @@ public class PretplatePanel extends JPanel {
 
 		if (p != null) {
 			if (p.getStatus() != StatusPretplate.CEKA_ODOBRENJE) {
-				javax.swing.JOptionPane.showMessageDialog(this, "Možete menjati status samo pretplatama koje čekaju odobrenje!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Možete menjati status samo pretplatama koje čekaju odobrenje!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 
@@ -62,12 +64,12 @@ public class PretplatePanel extends JPanel {
 
 
 			if (noviStatus == StatusPretplate.AKTIVNA) {
-				p.setDatumIsteka(java.time.LocalDate.now().plusYears(1));
+				p.setDatumIsteka(LocalDate.now().plusYears(1));
 			}
 
 			pp.sacuvajIzmene();
 			osveziTabelu();
-			javax.swing.JOptionPane.showMessageDialog(this, "Status pretplate je uspešno izmenjen u " + noviStatus + ".");
+			JOptionPane.showMessageDialog(this, "Status pretplate je uspešno izmenjen u " + noviStatus + ".");
 		}
 	}
 

@@ -1,4 +1,5 @@
 package gui;
+import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 import javax.swing.JButton;
@@ -45,7 +46,7 @@ public class RezervacijePanel extends JPanel {
 	private void promeniStatus(StatusRezervacije noviStatus) {
 		int selektovaniRed = tabela.getSelectedRow();
 		if (selektovaniRed == -1) {
-			javax.swing.JOptionPane.showMessageDialog(this, "Morate selektovati rezervaciju!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Morate selektovati rezervaciju!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
@@ -54,14 +55,14 @@ public class RezervacijePanel extends JPanel {
 
 		if (r != null) {
 			if (r.getStatusRezervacije() != StatusRezervacije.NA_ČEKANJU) {
-				javax.swing.JOptionPane.showMessageDialog(this, "Možete menjati status samo rezervacijama koje su na čekanju!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Možete menjati status samo rezervacijama koje su na čekanju!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 
 
 			if (noviStatus == StatusRezervacije.ODOBRENA) {
 				if (!rp.daLiJeVoziloSlobodno(r.getVozilo(), r.getDatumPocetka(), r.getDatumKraja())) {
-					javax.swing.JOptionPane.showMessageDialog(this, "Vozilo je već zauzeto u ovom terminu! Rezervacija se mora odbiti.", "Greška", javax.swing.JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Vozilo je već zauzeto u ovom terminu! Rezervacija se mora odbiti.", "Greška", JOptionPane.ERROR_MESSAGE);
 					rp.promeniStatusRezervacije(r, StatusRezervacije.ODBIJENA);
 					osveziTabelu();
 					return;
@@ -70,7 +71,7 @@ public class RezervacijePanel extends JPanel {
 
 			rp.promeniStatusRezervacije(r, noviStatus);
 			osveziTabelu();
-			javax.swing.JOptionPane.showMessageDialog(this, "Status rezervacije uspešno izmenjen u " + noviStatus + ".");
+			JOptionPane.showMessageDialog(this, "Status rezervacije uspešno izmenjen u " + noviStatus + ".");
 		}
 	}
 

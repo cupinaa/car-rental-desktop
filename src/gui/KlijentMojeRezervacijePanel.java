@@ -1,4 +1,7 @@
 package gui;
+import cenovnik.Cenovnik;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -80,7 +83,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 				if (potvrda == JOptionPane.YES_OPTION) {
 					r.setStatusRezervacije(StatusRezervacije.OTKAZANA);
 
-					ulogovaniKlijent.setZabranaRezervisanjaDo(java.time.LocalDateTime.now().plusHours(24));
+					ulogovaniKlijent.setZabranaRezervisanjaDo(LocalDateTime.now().plusHours(24));
 					kp.sacuvajIzmene();
 					rp.sacuvajIzmene();
 
@@ -102,7 +105,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 				String period = r.getDatumPocetka() + " do " + r.getDatumKraja();
 
 				double cenaUsluga = 0;
-				cenovnik.Cenovnik cZaR = cp.pronadjiVazeciCenovnik(r.getDatumPocetka());
+				Cenovnik cZaR = cp.pronadjiVazeciCenovnik(r.getDatumPocetka());
 				for (DodatnaUsluga du : r.getDodatneUsluge()) {
 					double cUsl = 0;
 					if (cZaR != null && cZaR.getCeneDodatnihUsluga() != null && cZaR.getCeneDodatnihUsluga().containsKey(du.getId())) {
@@ -111,7 +114,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 
 					String naziv = du.getDodatnaUsluga().toLowerCase();
 					if (naziv.contains("produženo") || naziv.contains("produzeno")) {
-						long brojDana = java.time.temporal.ChronoUnit.DAYS.between(r.getDatumPocetka(), r.getDatumKraja());
+						long brojDana = ChronoUnit.DAYS.between(r.getDatumPocetka(), r.getDatumKraja());
 						if (brojDana <= 0) brojDana = 1;
 						cenaUsluga += cUsl * brojDana; 
 					} else {

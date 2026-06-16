@@ -1,4 +1,14 @@
 package gui;
+import cenovnik.Cenovnik;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import podaci.Podesavanja;
+import rezervacija.DodatnaUsluga;
+import vozila.StatusVozila;
+import vozila.Vozilo;
 
 import java.awt.BorderLayout;
 import javax.swing.JButton;
@@ -69,8 +79,8 @@ public class IzdavanjePanel extends JPanel {
 		if (r != null) {
 
 
-			java.util.ArrayList<vozila.Vozilo> slobodniPrimerci = new java.util.ArrayList<>();
-			for (vozila.Vozilo v : vp.getVozila()) {
+			ArrayList<Vozilo> slobodniPrimerci = new ArrayList<>();
+			for (Vozilo v : vp.getVozila()) {
 				if (v.getModelVozila().getId() == r.getVozilo().getModelVozila().getId()) {
 					if (rp.daLiJeVoziloSlobodno(v, r.getDatumPocetka(), r.getDatumKraja()) || v.getId() == r.getVozilo().getId()) {
 						slobodniPrimerci.add(v);
@@ -85,7 +95,7 @@ public class IzdavanjePanel extends JPanel {
 
 			String[] opcijePrimeraka = new String[slobodniPrimerci.size()];
 			for (int i=0; i<slobodniPrimerci.size(); i++) {
-				vozila.Vozilo v = slobodniPrimerci.get(i);
+				Vozilo v = slobodniPrimerci.get(i);
 				opcijePrimeraka[i] = v.getRegistarskeTablice();
 			}
 
@@ -109,7 +119,7 @@ public class IzdavanjePanel extends JPanel {
 				}
 			}
 
-			vozila.Vozilo konacnoIzabranoVozilo = slobodniPrimerci.get(indeksPrimerka);
+			Vozilo konacnoIzabranoVozilo = slobodniPrimerci.get(indeksPrimerka);
 
 			String unos = JOptionPane.showInputDialog(this, "Unesite početnu kilometražu vozila (" + konacnoIzabranoVozilo.getRegistarskeTablice() + "):");
 			if (unos != null && !unos.trim().isEmpty()) {
@@ -123,13 +133,13 @@ public class IzdavanjePanel extends JPanel {
 					Object[] opcijeDaNe = {"Da", "Ne"};
 					int odzivUsluge = JOptionPane.showOptionDialog(this, "Da li klijent želi da doda neku dodatnu uslugu?", "Dodatne Usluge", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opcijeDaNe, opcijeDaNe[0]);
 					if (odzivUsluge == 0) {
-						java.util.ArrayList<String> opcije = new java.util.ArrayList<>();
-						java.util.ArrayList<rezervacija.DodatnaUsluga> dostupne = new java.util.ArrayList<>();
-						cenovnik.Cenovnik danasnjiCenovnik = cp.pronadjiVazeciCenovnik(java.time.LocalDate.now());
+						ArrayList<String> opcije = new ArrayList<>();
+						ArrayList<DodatnaUsluga> dostupne = new ArrayList<>();
+						Cenovnik danasnjiCenovnik = cp.pronadjiVazeciCenovnik(LocalDate.now());
 
-						for (rezervacija.DodatnaUsluga du : dup.getUsluge()) {
+						for (DodatnaUsluga du : dup.getUsluge()) {
 							boolean vecIma = false;
-							for (rezervacija.DodatnaUsluga postojeca : r.getDodatneUsluge()) {
+							for (DodatnaUsluga postojeca : r.getDodatneUsluge()) {
 								if (postojeca.getId() == du.getId()) vecIma = true;
 							}
 							if (!vecIma) {
@@ -143,14 +153,14 @@ public class IzdavanjePanel extends JPanel {
 						}
 
 						if (!opcije.isEmpty()) {
-							javax.swing.JList<String> lista = new javax.swing.JList<>(opcije.toArray(new String[0]));
-							lista.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+							JList<String> lista = new JList<>(opcije.toArray(new String[0]));
+							lista.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 							JOptionPane.showMessageDialog(this, new JScrollPane(lista), "Izaberite usluge (Držite CTRL za više)", JOptionPane.PLAIN_MESSAGE);
 
 							int[] sel = lista.getSelectedIndices();
 							if (sel.length > 0) {
 								for (int idx : sel) {
-									rezervacija.DodatnaUsluga novaUsluga = dostupne.get(idx);
+									DodatnaUsluga novaUsluga = dostupne.get(idx);
 									r.getDodatneUsluge().add(novaUsluga);
 
 									double cenaDanas = 0.0;
@@ -160,10 +170,10 @@ public class IzdavanjePanel extends JPanel {
 
 									String imeUsluge = novaUsluga.getDodatnaUsluga().toLowerCase();
 									if (imeUsluge.contains("produženo") || imeUsluge.contains("produzeno")) {
-										podaci.Podesavanja p = new podaci.Podesavanja();
+										Podesavanja p = new Podesavanja();
 										p.ucitaj();
 										long podrazumevano = p.getPodrazumevanoTrajanjeNajma();
-										long brojDana = java.time.temporal.ChronoUnit.DAYS.between(r.getDatumPocetka(), r.getDatumKraja());
+										long brojDana = ChronoUnit.DAYS.between(r.getDatumPocetka(), r.getDatumKraja());
 										long dodatniDani = brojDana - podrazumevano;
 										if (dodatniDani > 0) {
 											r.setUkupnaCena(r.getUkupnaCena() + (cenaDanas * dodatniDani));
@@ -181,7 +191,7 @@ public class IzdavanjePanel extends JPanel {
 
 					if (r.getVozilo().getId() != konacnoIzabranoVozilo.getId()) {
 
-						r.getVozilo().setStatusVozila(vozila.StatusVozila.RASPOLOZIVO);
+						r.getVozilo().setStatusVozila(StatusVozila.RASPOLOZIVO);
 
 						r.setVozilo(konacnoIzabranoVozilo);
 					}

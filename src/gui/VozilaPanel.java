@@ -1,4 +1,5 @@
 package gui;
+import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 import javax.swing.JButton;
@@ -56,7 +57,7 @@ public class VozilaPanel extends JPanel {
 			btnIzmeni.addActionListener(e -> {
 				int selektovaniRed = tabela.getSelectedRow();
 				if (selektovaniRed == -1) {
-					javax.swing.JOptionPane.showMessageDialog(this, "Morate prvo selektovati vozilo iz tabele!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Morate prvo selektovati vozilo iz tabele!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
@@ -72,7 +73,7 @@ public class VozilaPanel extends JPanel {
 			btnObrisi.addActionListener(e -> {
 				int selektovaniRed = tabela.getSelectedRow();
 				if (selektovaniRed == -1) {
-					javax.swing.JOptionPane.showMessageDialog(this, "Morate prvo selektovati vozilo iz tabele!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Morate prvo selektovati vozilo iz tabele!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
@@ -81,15 +82,15 @@ public class VozilaPanel extends JPanel {
 
 				if (zaBrisanje != null) {
 					Object[] opcije = {"Da", "Ne"};
-					int potvrda = javax.swing.JOptionPane.showOptionDialog(this,
+					int potvrda = JOptionPane.showOptionDialog(this,
 							"Da li ste sigurni da želite da obrišete vozilo: " + zaBrisanje.getRegistarskeTablice() + "?",
 							"Potvrda brisanja",
-							javax.swing.JOptionPane.YES_NO_OPTION,
-							javax.swing.JOptionPane.QUESTION_MESSAGE,
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
 							null,
 							opcije,
 							opcije[1]);
-					if (potvrda == javax.swing.JOptionPane.YES_OPTION) {
+					if (potvrda == JOptionPane.YES_OPTION) {
 						vp.obrisiVozilo(zaBrisanje); 
 						osveziTabelu(); 
 					}

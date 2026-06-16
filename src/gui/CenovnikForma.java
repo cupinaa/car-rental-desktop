@@ -1,4 +1,6 @@
 package gui;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.awt.GridLayout;
 import java.time.LocalDate;
@@ -26,7 +28,7 @@ public class CenovnikForma extends JDialog {
 
 	private JTextField txtPocetak, txtKraj, txtPretplata, txtPopustStudent, txtPopustFirma, txtPopustPenzioner, txtKazna;
 	private JTextField txtCenaEconomy, txtCenaStandard, txtCenaFamily, txtCenaLuxury;
-	private java.util.Map<Integer, JTextField> txtCeneUsluga = new java.util.HashMap<>();
+	private Map<Integer, JTextField> txtCeneUsluga = new HashMap<>();
 
 	public CenovnikForma(CenovniciPodaci cp, DodatneUslugePodaci dup, Cenovnik cZaIzmenu, Runnable naUspesnoDodavanje) {
 		this.cp = cp;
@@ -106,7 +108,7 @@ public class CenovnikForma extends JDialog {
 		}
 
 		if (cZaIzmenu.getCeneDodatnihUsluga() != null) {
-			for (java.util.Map.Entry<Integer, Double> entry : cZaIzmenu.getCeneDodatnihUsluga().entrySet()) {
+			for (Map.Entry<Integer, Double> entry : cZaIzmenu.getCeneDodatnihUsluga().entrySet()) {
 				if (txtCeneUsluga.containsKey(entry.getKey())) {
 					txtCeneUsluga.get(entry.getKey()).setText(String.valueOf(entry.getValue()));
 				}
@@ -129,8 +131,8 @@ public class CenovnikForma extends JDialog {
 			double cFam = Double.parseDouble(txtCenaFamily.getText());
 			double cLux = Double.parseDouble(txtCenaLuxury.getText());
 
-			java.util.Map<Integer, Double> mapeCenaUsluga = new java.util.HashMap<>();
-			for (java.util.Map.Entry<Integer, JTextField> entry : txtCeneUsluga.entrySet()) {
+			Map<Integer, Double> mapeCenaUsluga = new HashMap<>();
+			for (Map.Entry<Integer, JTextField> entry : txtCeneUsluga.entrySet()) {
 				mapeCenaUsluga.put(entry.getKey(), Double.parseDouble(entry.getValue().getText()));
 			}
 

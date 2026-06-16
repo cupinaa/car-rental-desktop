@@ -1,4 +1,5 @@
 package podaci;
+import java.time.LocalDateTime;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -74,7 +75,7 @@ public class RezervacijePodaci {
 
 
 				if (r.getKlijent() != null) {
-					r.getKlijent().setZabranaRezervisanjaDo(java.time.LocalDateTime.now().plusHours(24));
+					r.getKlijent().setZabranaRezervisanjaDo(LocalDateTime.now().plusHours(24));
 				}
 				izmenjeno = true;
 			}

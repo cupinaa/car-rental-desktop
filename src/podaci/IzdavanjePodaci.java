@@ -1,4 +1,5 @@
 package podaci;
+import cenovnik.Cenovnik;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -56,7 +57,7 @@ public class IzdavanjePodaci {
 		this.dodajIzdavanje(izdavanje); 
 	}
 
-	public void vratiVozilo(Izdavanje i, double novaKilometraza, LocalDate datumVracanja, RezervacijePodaci rp, cenovnik.Cenovnik aktuelniCenovnik, KorisniciPodaci kp) {
+	public void vratiVozilo(Izdavanje i, double novaKilometraza, LocalDate datumVracanja, RezervacijePodaci rp, Cenovnik aktuelniCenovnik, KorisniciPodaci kp) {
 		i.setKrajnjaKilometraza(novaKilometraza);
 		i.getRezervacija().getVozilo().setStatusVozila(StatusVozila.RASPOLOZIVO);
 

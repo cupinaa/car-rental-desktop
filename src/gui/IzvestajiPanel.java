@@ -1,4 +1,8 @@
 package gui;
+import cenovnik.Cenovnik;
+import java.time.temporal.ChronoUnit;
+import javax.swing.JOptionPane;
+import rezervacija.StatusRezervacije;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -103,7 +107,7 @@ public class IzvestajiPanel extends JPanel {
 			generisiPrihodeRashode(odDatuma, doDatuma);
 
 		} catch (Exception ex) {
-			javax.swing.JOptionPane.showMessageDialog(this, "Neispravan format datuma. Koristite YYYY-MM-DD.", "Greška", javax.swing.JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Neispravan format datuma. Koristite YYYY-MM-DD.", "Greška", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -172,7 +176,7 @@ public class IzvestajiPanel extends JPanel {
 				if (r.getVozilo().getModelVozila().getId() == m.getId()) {
 					if (!r.getDatumPocetka().isBefore(odDatuma) && !r.getDatumPocetka().isAfter(doDatuma)) {
 						brojRezervacija++;
-						if (r.getStatusRezervacije() == rezervacija.StatusRezervacije.REALIZOVANA) {
+						if (r.getStatusRezervacije() == StatusRezervacije.REALIZOVANA) {
 							brojIzdavanja++;
 						}
 					}
@@ -201,7 +205,7 @@ public class IzvestajiPanel extends JPanel {
 			if (p.getStatus() == StatusPretplate.AKTIVNA) {
 				LocalDate datumUplate = p.getDatumIsteka().minusYears(1);
 				if (!datumUplate.isBefore(odDatuma) && !datumUplate.isAfter(doDatuma)) {
-					cenovnik.Cenovnik vazeci = cp.pronadjiVazeciCenovnik(datumUplate);
+					Cenovnik vazeci = cp.pronadjiVazeciCenovnik(datumUplate);
 					if (vazeci != null) {
 						prihodiPretplate += vazeci.getCenaPretplate();
 					}
@@ -211,7 +215,7 @@ public class IzvestajiPanel extends JPanel {
 
 
 		double rashodiPlate = 0;
-		long brojDana = java.time.temporal.ChronoUnit.DAYS.between(odDatuma, doDatuma);
+		long brojDana = ChronoUnit.DAYS.between(odDatuma, doDatuma);
 		if (brojDana <= 0) brojDana = 1;
 
 		for (Korisnik k : kp.getKorisnici()) {
