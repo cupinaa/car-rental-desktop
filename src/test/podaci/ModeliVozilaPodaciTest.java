@@ -21,7 +21,7 @@ public class ModeliVozilaPodaciTest {
 		mp = new ModeliVozilaPodaci() {
 			@Override
 			public void upisi(String path) {
-				// Ne radimo nista
+
 			}
 		};
 	}
@@ -31,7 +31,7 @@ public class ModeliVozilaPodaciTest {
 		int pocetnaVelicina = mp.getModeli().size();
 		ModelVozila m = new ModelVozila("Toyota", "Yaris", KategorijaVozila.ECONOMY);
 		mp.dodajModel(m);
-		
+
 		assertEquals("Broj modela mora biti uvecan za 1", pocetnaVelicina + 1, mp.getModeli().size());
 		assertTrue("ID mora biti veci od 0", m.getId() > 0);
 	}
@@ -40,7 +40,7 @@ public class ModeliVozilaPodaciTest {
 	public void testPronadjiModel() {
 		ModelVozila m = new ModelVozila("Toyota", "Corolla", KategorijaVozila.ECONOMY);
 		mp.dodajModel(m);
-		
+
 		ModelVozila pronadjeni = mp.pronadjiModel(m.getId());
 		assertNotNull(pronadjeni);
 		assertEquals("Marke se moraju poklapati", "Toyota", pronadjeni.getMarkaVozila());

@@ -62,7 +62,7 @@ public class DodatneUslugePodaci {
             System.out.println("Greška pri upisu usluga: " + e.getMessage());
         }
     }
-    
+
     public void obrisiUslugu(DodatnaUsluga du) {
         usluge.remove(du);
         try {

@@ -8,9 +8,9 @@ public class Administrator extends Zaposleni {
 		super(ime, prezime, pol, datumRodjenja, telefon, adresa, korisnickoIme, lozinka, strucnaSprema,
 				godineStaza);
 	}
-	
-	
-	
+
+
+
 	public Administrator(int id, String ime, String prezime, Pol pol, LocalDate datumRodjenja, String telefon,
 			String adresa, String korisnickoIme, String lozinka, StrucnaSprema strucnaSprema, int godineStaza,
 			double plata) {

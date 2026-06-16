@@ -20,7 +20,7 @@ public class PodesavanjaPanel extends JPanel {
 		setLayout(new BorderLayout());
 
 		JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-		
+
 		centerPanel.add(new JLabel("Podrazumevano trajanje najma (u danima):"));
 		JTextField txtTrajanje = new JTextField(10);
 		txtTrajanje.setText(String.valueOf(p.getPodrazumevanoTrajanjeNajma()));

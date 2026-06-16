@@ -27,7 +27,7 @@ public class VozilaPodaciTest {
 		vp = new VozilaPodaci() {
 			@Override
 			public void sacuvajIzmene() {
-				// Ne radimo nista
+
 			}
 		};
 	}
@@ -42,9 +42,9 @@ public class VozilaPodaciTest {
 		int pocetnaVelicina = vp.getVozila().size();
 		ModelVozila model = new ModelVozila("Fiat", "Punto", KategorijaVozila.ECONOMY);
 		Vozilo v = new Vozilo(model, "BG-123-AA", StatusVozila.RASPOLOZIVO);
-		
+
 		vp.dodajVozilo(v);
-		
+
 		assertEquals("Broj vozila se mora uvecati za 1", pocetnaVelicina + 1, vp.getVozila().size());
 		assertTrue("ID vozila mora biti generisan (veci od 0)", v.getId() > 0);
 	}
@@ -54,7 +54,7 @@ public class VozilaPodaciTest {
 		ModelVozila model = new ModelVozila("Fiat", "Punto", KategorijaVozila.ECONOMY);
 		Vozilo v = new Vozilo(model, "NS-111-BB", StatusVozila.RASPOLOZIVO);
 		vp.dodajVozilo(v);
-		
+
 		Vozilo pronadjeno = vp.pronadjiVozilo(v.getId());
 		assertNotNull(pronadjeno);
 		assertEquals("Registracija mora da se poklapa", "NS-111-BB", pronadjeno.getRegistarskeTablice());
@@ -66,7 +66,7 @@ public class VozilaPodaciTest {
 		Vozilo v = new Vozilo(model, "NI-222-CC", StatusVozila.RASPOLOZIVO);
 		vp.dodajVozilo(v);
 		int id = v.getId();
-		
+
 		assertNotNull(vp.pronadjiVozilo(id));
 		vp.obrisiVozilo(v);
 		assertNull(vp.pronadjiVozilo(id));

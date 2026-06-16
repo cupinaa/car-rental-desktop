@@ -27,7 +27,7 @@ public abstract class Korisnik {
 		this.korisnickoIme = korisnickoIme;
 		this.lozinka = lozinka;
 	}
-	
+
 	public Korisnik(String ime, String prezime, Pol pol, LocalDate datumRodjenja, String telefon, String adresa,
 			String korisnickoIme, String lozinka) {
 		this.ime = ime;
@@ -48,7 +48,7 @@ public abstract class Korisnik {
 		           " | Adresa: " + adresa + 
 		           " | Datum rođenja: " + datumRodjenja + "]"; 
 	}
-	
+
 	public void prijava() {
 		this.prijavaljen = true;
 	}

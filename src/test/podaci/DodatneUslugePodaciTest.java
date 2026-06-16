@@ -24,7 +24,7 @@ public class DodatneUslugePodaciTest {
 		dup = new DodatneUslugePodaci() {
 			@Override
 			public void upisi(String p) throws IOException {
-				// Ne menjamo fajlove u memorijskim testovima
+
 			}
 		};
 	}
@@ -39,7 +39,7 @@ public class DodatneUslugePodaciTest {
 		int staraVelicina = dup.getUsluge().size();
 		DodatnaUsluga du = new DodatnaUsluga("Krovni kofer");
 		dup.dodajUslugu(du);
-		
+
 		assertEquals("Lista usluga se mora povecati za 1", staraVelicina + 1, dup.getUsluge().size());
 		assertTrue("ID mora biti generisan (veci od 0)", du.getId() > 0);
 	}
@@ -49,9 +49,9 @@ public class DodatneUslugePodaciTest {
 		DodatnaUsluga du = new DodatnaUsluga("GPS Navigacija");
 		dup.dodajUslugu(du);
 		int id = du.getId();
-		
+
 		assertNotNull("Usluga mora postojati pre brisanja", dup.pronadjiUslugu(id));
-		
+
 		dup.obrisiUslugu(du);
 		assertNull("Usluga mora biti null nakon brisanja", dup.pronadjiUslugu(id));
 	}
@@ -60,7 +60,7 @@ public class DodatneUslugePodaciTest {
 	public void testPronadjiUslugu() {
 		DodatnaUsluga du = new DodatnaUsluga("Decije sediste");
 		dup.dodajUslugu(du);
-		
+
 		DodatnaUsluga pronadjena = dup.pronadjiUslugu(du.getId());
 		assertNotNull(pronadjena);
 		assertEquals("Naziv usluge se mora poklapati", "Decije sediste", pronadjena.getDodatnaUsluga());
@@ -71,12 +71,12 @@ public class DodatneUslugePodaciTest {
 		DodatneUslugePodaci produkcioniDup = new DodatneUslugePodaci();
 		produkcioniDup.getUsluge().add(new DodatnaUsluga(1, "Zimske gume"));
 		produkcioniDup.getUsluge().add(new DodatnaUsluga(2, "Lanac za sneg"));
-		
+
 		produkcioniDup.upisi(testPutanja);
-		
+
 		DodatneUslugePodaci ucitaniDup = new DodatneUslugePodaci();
 		ucitaniDup.ucitaj(testPutanja);
-		
+
 		assertEquals("Mora biti ucitano 2 usluge", 2, ucitaniDup.getUsluge().size());
 		assertEquals("Prva usluga mora biti Zimske gume", "Zimske gume", ucitaniDup.getUsluge().get(0).getDodatnaUsluga());
 	}

@@ -20,7 +20,7 @@ public class VozilaPodaci {
         String linija;
         while ((linija = br.readLine()) != null) {
             String[] delovi = linija.split("\\|");
-            
+
             int idVozila = Integer.parseInt(delovi[0]);
             int idModela = Integer.parseInt(delovi[1]);
             String registracija = delovi[2];
@@ -65,8 +65,8 @@ public class VozilaPodaci {
             System.out.println("Greška pri upisu vozila: " + e.getMessage());
         }
     }
-    
-    
+
+
     public Vozilo pronadjiVozilo(int id) {
         for (Vozilo v : vozila) {
             if (v.getId() == id) {
@@ -75,8 +75,8 @@ public class VozilaPodaci {
         }
         return null;
     }
-    
-    
+
+
     public void obrisiVozilo(Vozilo v) {
         vozila.remove(v);
         try {

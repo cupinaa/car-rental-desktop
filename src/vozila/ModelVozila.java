@@ -19,7 +19,7 @@ public class ModelVozila {
 		this.nazivModela = nazivModela;
 		this.kategorija = kategorija;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Model: " + markaVozila + " " + nazivModela + " (" + kategorija + ")";

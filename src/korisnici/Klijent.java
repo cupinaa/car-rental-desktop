@@ -21,7 +21,7 @@ public class Klijent extends Korisnik {
 		super(id, ime, prezime, pol, datumRodjenja, telefon, adresa, korisnickoIme, lozinka);
 		this.datumIzdavanjaVozacke = datumIzdavanjaVozacke;
 	}
-	
+
 	public Klijent(String ime, String prezime, Pol pol, LocalDate datumRodjenja, String telefon,
 			String adresa, String korisnickoIme, String lozinka, LocalDate datumIzdavanjaVozacke,
 			KategorijaKlijenata kategorijaKlijenata) {
@@ -39,7 +39,7 @@ public class Klijent extends Korisnik {
 	public boolean imaPravoNaRezervaciju() {
 		LocalDate danas = LocalDate.now();
 		LocalDate preDveGodine = danas.minusYears(2);
-		
+
 		return preDveGodine.isAfter(this.datumIzdavanjaVozacke) || preDveGodine.isEqual(this.datumIzdavanjaVozacke);
 	}
 

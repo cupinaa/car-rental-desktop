@@ -15,8 +15,8 @@ public class Rezervacija {
 	protected LocalDate datumKraja;
 	protected double ukupnaCena;
 	protected StatusRezervacije statusRezervacije = StatusRezervacije.NA_ČEKANJU;
-	
-	
+
+
 	protected ArrayList<DodatnaUsluga> dodatneUsluge;
 
 
@@ -121,6 +121,6 @@ public class Rezervacija {
 	public void setDodatneUsluge(ArrayList<DodatnaUsluga> dodatneUsluge) {
 		this.dodatneUsluge = dodatneUsluge;
 	}
-	
+
 
 }

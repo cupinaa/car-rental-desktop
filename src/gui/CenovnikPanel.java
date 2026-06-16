@@ -22,57 +22,57 @@ public class CenovnikPanel extends JPanel {
 		this.cp = cp;
 		this.dup = dup;
 		setLayout(new BorderLayout()); 
-		
+
 		String[] kolone = {"ID", "Početak Važenja", "Kraj Važenja", "Pretplata (RSD)", "Kazna/Dan"};
 		tableModel = new DefaultTableModel(kolone, 0); 
 		tabela = new JTable(tableModel);
-		
+
 		osveziTabelu();
-		
+
 		JScrollPane scrollPane = new JScrollPane(tabela);
 		add(scrollPane, BorderLayout.CENTER); 
-		
+
 		JPanel panelDugmici = new JPanel();
 		JButton btnDodaj = new JButton("Dodaj");
 		JButton btnIzmeni = new JButton("Izmeni");
 		JButton btnObrisi = new JButton("Obriši");
-		
+
 		panelDugmici.add(btnDodaj);
 		panelDugmici.add(btnIzmeni);
 		panelDugmici.add(btnObrisi);
 		add(panelDugmici, BorderLayout.SOUTH);
-		
+
 		btnDodaj.addActionListener(e -> {
 			CenovnikForma cf = new CenovnikForma(cp, dup, null, this::osveziTabelu);
 			cf.setVisible(true); 
 		});
-		
+
 		btnIzmeni.addActionListener(e -> {
 			int selektovaniRed = tabela.getSelectedRow();
 			if (selektovaniRed == -1) {
 				javax.swing.JOptionPane.showMessageDialog(this, "Morate prvo selektovati cenovnik iz tabele!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			
+
 			int idCenovnika = (int) tableModel.getValueAt(selektovaniRed, 0);
 			Cenovnik zaIzmenu = cp.pronadjiCenovnik(idCenovnika);
-			
+
 			if (zaIzmenu != null) {
 				CenovnikForma cf = new CenovnikForma(cp, dup, zaIzmenu, this::osveziTabelu);
 				cf.setVisible(true);
 			}
 		});
-		
+
 		btnObrisi.addActionListener(e -> {
 			int selektovaniRed = tabela.getSelectedRow();
 			if (selektovaniRed == -1) {
 				javax.swing.JOptionPane.showMessageDialog(this, "Morate prvo selektovati cenovnik iz tabele!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			
+
 			int idCenovnika = (int) tableModel.getValueAt(selektovaniRed, 0);
 			Cenovnik zaBrisanje = cp.pronadjiCenovnik(idCenovnika);
-			
+
 			if (zaBrisanje != null) {
 				Object[] opcije = {"Da", "Ne"};
 				int potvrda = javax.swing.JOptionPane.showOptionDialog(this,
@@ -90,7 +90,7 @@ public class CenovnikPanel extends JPanel {
 			}
 		});
 	}
-	
+
 	private void osveziTabelu() {
 		tableModel.setRowCount(0);
 		for (Cenovnik c : cp.getCenovnici()) {

@@ -53,7 +53,7 @@ public class PretplatePodaci {
 		}
 		return null;
 	}
-	
+
 	public Pretplata pronadjiPretplatuZaKlijenta(int idKlijenta) {
 		for (Pretplata p : pretplate) {
 			if (p.getKlijent().getId() == idKlijenta) {
@@ -81,7 +81,7 @@ public class PretplatePodaci {
 
 	public void podnesiZahtevZaPretplatu(Klijent k) {
 		Pretplata postojeca = pronadjiPretplatuZaKlijenta(k.getId());
-		
+
 		if (k.getBrojKasnjenja() > 5) {
 			if (postojeca != null) {
 				postojeca.setStatus(StatusPretplate.ODBIJENA);
@@ -99,7 +99,7 @@ public class PretplatePodaci {
 			}
 			System.out.println("Zahtev poslat! Čeka se agent.");
 		}
-		
+
 		sacuvajIzmene();
 	}
 

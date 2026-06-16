@@ -67,16 +67,16 @@ public class IzvestajiPanel extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 
 		JTabbedPane tabbedPane = new JTabbedPane();
-		
+
 		txtIzdavanja = createTextArea();
 		tabbedPane.addTab("Izdavanja po Agentu", new JScrollPane(txtIzdavanja));
-		
+
 		txtRezervacije = createTextArea();
 		tabbedPane.addTab("Rezervacije", new JScrollPane(txtRezervacije));
-		
+
 		txtModeli = createTextArea();
 		tabbedPane.addTab("Modeli Vozila", new JScrollPane(txtModeli));
-		
+
 		txtPrihodi = createTextArea();
 		tabbedPane.addTab("Prihodi i Rashodi", new JScrollPane(txtPrihodi));
 
@@ -192,10 +192,10 @@ public class IzvestajiPanel extends JPanel {
 		for (Izdavanje i : ip.getIzdavanja()) {
 			LocalDate d = i.getRezervacija().getDatumPocetka();
 			if (!d.isBefore(odDatuma) && !d.isAfter(doDatuma)) {
-				prihodiNajmovi += i.getRezervacija().getUkupnaCena(); // U ukupnoj ceni su i dodatne usluge i kazne
+				prihodiNajmovi += i.getRezervacija().getUkupnaCena(); 
 			}
 		}
-		
+
 		double prihodiPretplate = 0;
 		for (Pretplata p : pp.getPretplate()) {
 			if (p.getStatus() == StatusPretplate.AKTIVNA) {
@@ -208,12 +208,12 @@ public class IzvestajiPanel extends JPanel {
 				}
 			}
 		}
-		
-		// Rashodi = plate
+
+
 		double rashodiPlate = 0;
 		long brojDana = java.time.temporal.ChronoUnit.DAYS.between(odDatuma, doDatuma);
 		if (brojDana <= 0) brojDana = 1;
-		
+
 		for (Korisnik k : kp.getKorisnici()) {
 			if (k instanceof Zaposleni) {
 				double dnevnica = ((Zaposleni)k).getPlata() / 30.0;

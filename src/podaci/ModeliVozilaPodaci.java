@@ -57,8 +57,8 @@ public class ModeliVozilaPodaci {
             System.out.println("Greška pri upisu modela: " + e.getMessage());
         }
     }
-    
-    
+
+
     public ModelVozila pronadjiModel(int id) {
         for (ModelVozila m : modeli) {
             if (m.getId() == id) {

@@ -58,7 +58,7 @@ public class RezervacijePodaci {
 			rezervacije.add(r);
 		}
 		br.close();
-		
+
 		boolean izmenjeno = false;
 		for (Rezervacija r : rezervacije) {
 			if (r.getStatusRezervacije() == StatusRezervacije.values()[0] && 
@@ -66,23 +66,23 @@ public class RezervacijePodaci {
 				r.setStatusRezervacije(StatusRezervacije.ODBIJENA);
 				izmenjeno = true;
 			}
-			
-			// Ako se klijent nije pojavio do isteka pocetnog datuma
+
+
 			if (r.getStatusRezervacije() == StatusRezervacije.values()[4] &&
 				r.getDatumPocetka().isBefore(LocalDate.now())) {
 				r.setStatusRezervacije(StatusRezervacije.OTKAZANA);
-				
-				// Zabrana od 24h zbog nepojavljivanja
+
+
 				if (r.getKlijent() != null) {
 					r.getKlijent().setZabranaRezervisanjaDo(java.time.LocalDateTime.now().plusHours(24));
 				}
 				izmenjeno = true;
 			}
 		}
-		
+
 		if (izmenjeno) {
 			upisi(putanja);
-			kp.sacuvajIzmene(); // Cuvamo izmene nad klijentima (njihove zabrane)
+			kp.sacuvajIzmene(); 
 		}
 	}
 
@@ -103,7 +103,7 @@ public class RezervacijePodaci {
 		}
 		pw.close();
 	}
-	
+
 	public Rezervacija pronadjiRezervaciju(int id) {
 	    for (Rezervacija r : rezervacije) {
 	        if (r.getId() == id) return r;
@@ -165,7 +165,7 @@ public class RezervacijePodaci {
 			if (aktuelni.getCeneDodatnihUsluga() != null && aktuelni.getCeneDodatnihUsluga().containsKey(du.getId())) {
 				cenaUsluge = aktuelni.getCeneDodatnihUsluga().get(du.getId());
 			}
-			
+
 			if (imeUsluge.contains("produženo") || imeUsluge.contains("produzeno")) {
 				long dodatniDani = brojDana - podrazumevano;
 				if (dodatniDani > 0) {
@@ -175,7 +175,7 @@ public class RezervacijePodaci {
 				ukupnaCena += cenaUsluge; 
 			}
 		}
-		
+
 		if (r.getKlijent().getKategorijaKlijenata() != null) {
 		    switch (r.getKlijent().getKategorijaKlijenata()) {
 		        case STUDENT:
@@ -198,19 +198,19 @@ public class RezervacijePodaci {
 			if (r.getVozilo() == null || r.getVozilo().getId() != v.getId()) {
 				continue;
 			}
-			
+
 			if (r.getStatusRezervacije() == StatusRezervacije.OTKAZANA || 
 			    r.getStatusRezervacije() == StatusRezervacije.ODBIJENA) {
 				continue;
 			}
-			
+
 			boolean preklapaSe = !trazeniPocetak.isAfter(r.getDatumKraja()) && !trazeniKraj.isBefore(r.getDatumPocetka());
-			
+
 			if (preklapaSe) {
 				return false; 
 			}
 		}
-		
+
 		return true; 
 	}
 
@@ -264,7 +264,7 @@ public class RezervacijePodaci {
 		for (Rezervacija r : rezervacije) {
 			if (r.getStatusRezervacije() != StatusRezervacije.OTKAZANA && 
 				r.getStatusRezervacije() != StatusRezervacije.ODBIJENA) {
-				
+
 				if (!r.getDatumPocetka().isBefore(odDatuma) && !r.getDatumPocetka().isAfter(doDatuma)) {
 					ukupniPrihodi += r.getUkupnaCena();
 				}

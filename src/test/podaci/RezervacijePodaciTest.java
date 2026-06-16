@@ -32,7 +32,7 @@ public class RezervacijePodaciTest {
 		rp = new RezervacijePodaci() {
 			@Override
 			public void upisi(String path) {
-				// Ne radimo nista
+
 			}
 		};
 	}
@@ -45,15 +45,15 @@ public class RezervacijePodaciTest {
 	@Test
 	public void testDodajRezervaciju() {
 		int pocetnaVelicina = rp.getRezervacije().size();
-		
+
 		Klijent klijent = new Klijent("Klijent", "Klijentovic", Pol.Zenski, LocalDate.now(), "060", "Adresa", "klijent", "123", LocalDate.now());
 		ModelVozila model = new ModelVozila("Fiat", "Punto", KategorijaVozila.ECONOMY);
 		Vozilo vozilo = new Vozilo(model, "BG-123", StatusVozila.RASPOLOZIVO);
-		
+
 		Rezervacija rezervacija = new Rezervacija(1, klijent, vozilo, LocalDate.now(), LocalDate.now().plusDays(3), 5000.0, StatusRezervacije.ODOBRENA, new ArrayList<>());
-		
+
 		rp.dodajRezervaciju(rezervacija);
-		
+
 		assertEquals("Broj rezervacija se mora uvecati za 1", pocetnaVelicina + 1, rp.getRezervacije().size());
 		assertTrue("ID rezervacije mora biti generisan (veci od 0)", rezervacija.getId() > 0);
 	}
@@ -63,10 +63,10 @@ public class RezervacijePodaciTest {
 		Klijent klijent = new Klijent("Klijent", "Klijentovic", Pol.Zenski, LocalDate.now(), "060", "Adresa", "klijent", "123", LocalDate.now());
 		ModelVozila model = new ModelVozila("Fiat", "Punto", KategorijaVozila.ECONOMY);
 		Vozilo vozilo = new Vozilo(model, "BG-123", StatusVozila.RASPOLOZIVO);
-		
+
 		Rezervacija rezervacija = new Rezervacija(1, klijent, vozilo, LocalDate.now(), LocalDate.now().plusDays(3), 5000.0, StatusRezervacije.ODOBRENA, new ArrayList<>());
 		rp.dodajRezervaciju(rezervacija);
-		
+
 		Rezervacija pronadjena = rp.pronadjiRezervaciju(rezervacija.getId());
 		assertNotNull("Rezervacija mora biti pronadjena", pronadjena);
 		assertEquals("Cena mora da se poklapa", 5000.0, pronadjena.getUkupnaCena(), 0.01);

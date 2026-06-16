@@ -26,7 +26,7 @@ public class KorisniciPodaciTest {
 		kp = new KorisniciPodaci() {
 			@Override
 			public void sacuvajIzmene() {
-				// Ne radimo nista
+
 			}
 		};
 	}
@@ -39,10 +39,10 @@ public class KorisniciPodaciTest {
 	@Test
 	public void testDodajKorisnika() {
 		int pocetnaVelicina = kp.getKorisnici().size();
-		
+
 		Klijent k = new Klijent("Pera", "Peric", Pol.Muski, LocalDate.now(), "060", "Adresa", "pera123", "pass", LocalDate.now());
 		kp.dodajKorisnika(k);
-		
+
 		assertEquals("Broj korisnika se mora uvecati za 1", pocetnaVelicina + 1, kp.getKorisnici().size());
 		assertTrue("Korisnik mora dobiti pozitivan ID", k.getId() > 0);
 	}
@@ -52,9 +52,9 @@ public class KorisniciPodaciTest {
 		Klijent k = new Klijent("Pera", "Peric", Pol.Muski, LocalDate.now(), "060", "Adresa", "pera123", "pass", LocalDate.now());
 		kp.dodajKorisnika(k);
 		int id = k.getId();
-		
+
 		assertNotNull("Korisnik mora postojati pre brisanja", kp.pronadjiKlijenta(id));
-		
+
 		kp.obrisiKorisnika(k);
 		assertNull("Korisnik mora biti null nakon brisanja", kp.pronadjiKlijenta(id));
 	}
@@ -63,7 +63,7 @@ public class KorisniciPodaciTest {
 	public void testPronadjiKorisnikaPoId() {
 		Klijent k = new Klijent("Mika", "Mikic", Pol.Muski, LocalDate.now(), "060", "Adresa", "mika123", "pass", LocalDate.now());
 		kp.dodajKorisnika(k);
-		
+
 		Klijent pronadjen = kp.pronadjiKlijenta(k.getId());
 		assertNotNull(pronadjen);
 		assertEquals("Imena se moraju poklapati", "Mika", pronadjen.getIme());
@@ -73,7 +73,7 @@ public class KorisniciPodaciTest {
 	public void testLogin() {
 		Klijent k = new Klijent("Ana", "Anic", Pol.Zenski, LocalDate.now(), "060", "Adresa", "ana123", "mojasifra", LocalDate.now());
 		kp.dodajKorisnika(k);
-		
+
 		assertNotNull("Validan login mora vratiti korisnika", kp.login("ana123", "mojasifra"));
 		assertNull("Pogresna sifra mora vratiti null", kp.login("ana123", "pogresna"));
 		assertNull("Pogresan username mora vratiti null", kp.login("nepostojeci", "mojasifra"));
@@ -84,10 +84,10 @@ public class KorisniciPodaciTest {
 		KorisniciPodaci produkcioniKp = new KorisniciPodaci();
 		produkcioniKp.getKorisnici().add(new Klijent(1, "Ime", "Prezime", Pol.Muski, LocalDate.now(), "060", "Adresa", "username", "pass", LocalDate.now()));
 		produkcioniKp.upisi(testPutanja);
-		
+
 		KorisniciPodaci ucitaniKp = new KorisniciPodaci();
 		ucitaniKp.ucitaj(testPutanja);
-		
+
 		assertEquals("Mora biti ucitano 1 korisnik", 1, ucitaniKp.getKorisnici().size());
 		assertEquals("Username mora biti tacan", "username", ucitaniKp.getKorisnici().get(0).getKorisnickoIme());
 	}

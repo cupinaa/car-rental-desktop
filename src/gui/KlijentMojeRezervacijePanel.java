@@ -30,7 +30,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 	private KorisniciPodaci kp;
 	private CenovniciPodaci cp;
 	private Klijent ulogovaniKlijent;
-	
+
 	private JTable tabela;
 	private DefaultTableModel tableModel;
 
@@ -39,34 +39,34 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 		this.kp = kp;
 		this.cp = cp;
 		this.ulogovaniKlijent = ulogovaniKlijent;
-		
+
 		setLayout(new BorderLayout()); 
-		
+
 		String[] kolone = {"ID", "Vozilo", "Period", "Potrošeno na najam", "Potrošeno na usluge/kazne", "Ukupno za plaćanje", "Status"};
 		tableModel = new DefaultTableModel(kolone, 0); 
 		tabela = new JTable(tableModel);
-		
+
 		osveziTabelu();
-		
+
 		JScrollPane scrollPane = new JScrollPane(tabela);
 		add(scrollPane, BorderLayout.CENTER); 
-		
+
 		JPanel panelDugmici = new JPanel();
 		JButton btnOtkazi = new JButton("Otkaži Rezervaciju");
-		
+
 		panelDugmici.add(btnOtkazi);
 		add(panelDugmici, BorderLayout.SOUTH);
-		
+
 		btnOtkazi.addActionListener(e -> {
 			int selektovaniRed = tabela.getSelectedRow();
 			if (selektovaniRed == -1) {
 				JOptionPane.showMessageDialog(this, "Morate prvo selektovati rezervaciju iz tabele!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			
+
 			int idRezervacije = (int) tableModel.getValueAt(selektovaniRed, 0);
 			Rezervacija r = rp.pronadjiRezervaciju(idRezervacije);
-			
+
 			if (r.getStatusRezervacije() == StatusRezervacije.NA_ČEKANJU || r.getStatusRezervacije() == StatusRezervacije.ODOBRENA) {
 				Object[] opcije = {"Da", "Ne"};
 				int potvrda = JOptionPane.showOptionDialog(this,
@@ -79,11 +79,11 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 						opcije[1]);
 				if (potvrda == JOptionPane.YES_OPTION) {
 					r.setStatusRezervacije(StatusRezervacije.OTKAZANA);
-					
+
 					ulogovaniKlijent.setZabranaRezervisanjaDo(java.time.LocalDateTime.now().plusHours(24));
 					kp.sacuvajIzmene();
 					rp.sacuvajIzmene();
-					
+
 					JOptionPane.showMessageDialog(this, "Rezervacija uspešno otkazana. Nećete moći da rezervišete naredna 24 časa.");
 					osveziTabelu(); 
 				}
@@ -92,15 +92,15 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 			}
 		});
 	}
-	
+
 	private void osveziTabelu() {
 		tableModel.setRowCount(0);
 		for (Rezervacija r : rp.getRezervacije()) {
 			if (r.getKlijent().getId() == ulogovaniKlijent.getId()) {
-				
+
 				String voziloInfo = r.getVozilo().getModelVozila().getMarkaVozila() + " " + r.getVozilo().getModelVozila().getNazivModela();
 				String period = r.getDatumPocetka() + " do " + r.getDatumKraja();
-				
+
 				double cenaUsluga = 0;
 				cenovnik.Cenovnik cZaR = cp.pronadjiVazeciCenovnik(r.getDatumPocetka());
 				for (DodatnaUsluga du : r.getDodatneUsluge()) {
@@ -108,7 +108,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 					if (cZaR != null && cZaR.getCeneDodatnihUsluga() != null && cZaR.getCeneDodatnihUsluga().containsKey(du.getId())) {
 						cUsl = cZaR.getCeneDodatnihUsluga().get(du.getId());
 					}
-					
+
 					String naziv = du.getDodatnaUsluga().toLowerCase();
 					if (naziv.contains("produženo") || naziv.contains("produzeno")) {
 						long brojDana = java.time.temporal.ChronoUnit.DAYS.between(r.getDatumPocetka(), r.getDatumKraja());
@@ -118,9 +118,9 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 						cenaUsluga += cUsl;
 					}
 				}
-				
+
 				double cenaNajma = r.getUkupnaCena() - cenaUsluga; 
-				
+
 				Object[] red = { 
 					r.getId(), 
 					voziloInfo, 

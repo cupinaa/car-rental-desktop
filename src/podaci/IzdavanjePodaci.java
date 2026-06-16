@@ -24,16 +24,16 @@ public class IzdavanjePodaci {
         String linija;
         while ((linija = br.readLine()) != null) {
             String[] delovi = linija.split("\\|");
-            
+
             int id = Integer.parseInt(delovi[0]);
             int idRez = Integer.parseInt(delovi[1]);
             int idAgenta = Integer.parseInt(delovi[2]);
             double pocetnaK = Double.parseDouble(delovi[3]);
             double krajnjaK = Double.parseDouble(delovi[4]);
-            
+
             Rezervacija r = rp.pronadjiRezervaciju(idRez);
             Agent a = kp.pronadjiAgenta(idAgenta);
-            
+
             if (r != null && a != null) {
                 Izdavanje i = new Izdavanje(id, r, a, pocetnaK, krajnjaK);
                 izdavanja.add(i);
@@ -59,19 +59,19 @@ public class IzdavanjePodaci {
 	public void vratiVozilo(Izdavanje i, double novaKilometraza, LocalDate datumVracanja, RezervacijePodaci rp, cenovnik.Cenovnik aktuelniCenovnik, KorisniciPodaci kp) {
 		i.setKrajnjaKilometraza(novaKilometraza);
 		i.getRezervacija().getVozilo().setStatusVozila(StatusVozila.RASPOLOZIVO);
-        
+
         long kasnjenje = ChronoUnit.DAYS.between(i.getRezervacija().getDatumKraja(), datumVracanja);
-        
+
         if (kasnjenje > 0 && aktuelniCenovnik != null) {
             double kazna = kasnjenje * aktuelniCenovnik.getIznosKazne();
             double staraCena = i.getRezervacija().getUkupnaCena();
-            
+
             i.getRezervacija().setUkupnaCena(staraCena + kazna);
-            
+
             Klijent k = i.getRezervacija().getKlijent();
             k.setBrojKasnjenja(k.getBrojKasnjenja() + 1);
             kp.sacuvajIzmene(); 
-            
+
             System.out.println("Klijent je kasnio " + kasnjenje + " dana! Dodata je kazna od " + kazna + " din.");
             rp.sacuvajIzmene(); 
         }

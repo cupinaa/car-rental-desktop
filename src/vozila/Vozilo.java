@@ -13,14 +13,14 @@ public class Vozilo {
 		this.registarskeTablice = registarskeTablice;
 		this.statusVozila = statusVozila;
 	}
-	
+
 
 	public Vozilo(ModelVozila modelVozila, String registarskeTablice, StatusVozila statusVozila) {
 		this.modelVozila = modelVozila;
 		this.registarskeTablice = registarskeTablice;
 		this.statusVozila = statusVozila;
 	}
-	
+
 
 	@Override
 	public String toString() {

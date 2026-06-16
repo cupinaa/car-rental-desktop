@@ -6,10 +6,10 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 public class Podesavanja {
-	
+
 	protected int podrazumevanoTrajanjeNajma = 3;
-	
-	
+
+
 	public void ucitaj() {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("podesavanja.txt"));

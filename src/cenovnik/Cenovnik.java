@@ -9,13 +9,13 @@ public class Cenovnik {
 	protected LocalDate pocetakVazenja;
 	protected LocalDate krajVazenja;
 	protected ArrayList<StavkaCenovnika> stavkeCenovnika;
-	
+
 	protected double cenaPretplate;
 	protected double popustStudent; 
 	protected double popustFirma;   
 	protected double popustPenzioner; 
 	protected double iznosKazne;
-	
+
 	protected java.util.Map<Integer, Double> ceneDodatnihUsluga;
 
 	public Cenovnik(int id, LocalDate pocetakVazenja, LocalDate krajVazenja,

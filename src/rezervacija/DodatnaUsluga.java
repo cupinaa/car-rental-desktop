@@ -18,7 +18,7 @@ public class DodatnaUsluga {
 	public String toString() {
 	    return dodatnaUsluga;
 	}
-	
+
 	public int getId() {
 		return id;
 	}

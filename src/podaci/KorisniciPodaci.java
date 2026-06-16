@@ -63,11 +63,11 @@ public class KorisniciPodaci {
 						klijent.setKategorijaKlijenata(kategorijaKlijenata);
 					} catch (Exception e) {}
 				}
-				
+
 				if (delovi.length > 12 && !delovi[12].isEmpty() && !delovi[12].equals("null")) {
 					klijent.setZabranaRezervisanjaDo(java.time.LocalDateTime.parse(delovi[12]));
 				}
-				
+
 				if (delovi.length > 13 && !delovi[13].isEmpty() && !delovi[13].equals("null")) {
 					klijent.setBrojKasnjenja(Integer.parseInt(delovi[13]));
 				}
@@ -97,7 +97,7 @@ public class KorisniciPodaci {
 				} else if (k instanceof Klijent) {
 					Klijent klijent = (Klijent) k;
 					String zabranaStr = (klijent.getZabranaRezervisanjaDo() != null) ? klijent.getZabranaRezervisanjaDo().toString() : "null";
-					
+
 					if (klijent.getKategorijaKlijenata() != null) {
 				        pw.println("KLIJENT|" + zajednickiDeo + "|" + klijent.getDatumIzdavanjaVozacke() + "|" + klijent.getKategorijaKlijenata().toString() + "|" + zabranaStr + "|" + klijent.getBrojKasnjenja());
 				    } else {
@@ -111,15 +111,15 @@ public class KorisniciPodaci {
 		}
 		pw.close();
 	}
-	
+
 	public Agent pronadjiAgenta(int id) {
 	    for (Korisnik k : korisnici) {
 	        if (k instanceof Agent && k.getId() == id) return (Agent) k;
 	    }
 	    return null;
 	}
-	
-	
+
+
 	public Klijent pronadjiKlijenta(int id) {
 	    for (Korisnik k : korisnici) {
 	        if (k instanceof Klijent && k.getId() == id) {
@@ -128,7 +128,7 @@ public class KorisniciPodaci {
 	    }
 	    return null;
 	}
-	
+
 	public Korisnik login(String korisnickoIme, String lozinka) {
 		for(Korisnik k : korisnici) {
 			if(k.getKorisnickoIme().equals(korisnickoIme) && k.getLozinka().equals(lozinka)) {
@@ -137,7 +137,7 @@ public class KorisniciPodaci {
 		}
 		return null;
 	}
-	
+
 	public void dodajKorisnika(Korisnik k) {
 		k.setId(generisiNoviId());
 		korisnici.add(k);
@@ -147,7 +147,7 @@ public class KorisniciPodaci {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
     private int generisiNoviId() {
         int maxId = 0;
         for (Korisnik k : korisnici) {
@@ -177,7 +177,7 @@ public class KorisniciPodaci {
 
 	public double izracunajRashode(LocalDate odDatuma, LocalDate doDatuma) {
 		double ukupniRashodi = 0;
-		
+
 		long brojDana = ChronoUnit.DAYS.between(odDatuma, doDatuma);
 		if (brojDana <= 0) {
 			brojDana = 1;
@@ -187,7 +187,7 @@ public class KorisniciPodaci {
 			if (k instanceof Zaposleni) {
 				double plataZaposlenog = ((Zaposleni) k).getPlata();
 				double dnevnica = plataZaposlenog / 30.0;
-				
+
 				ukupniRashodi += (dnevnica * brojDana);
 			}
 		}

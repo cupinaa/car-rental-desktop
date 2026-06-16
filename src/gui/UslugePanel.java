@@ -19,57 +19,57 @@ public class UslugePanel extends JPanel {
 	public UslugePanel(DodatneUslugePodaci dup) {
 		this.dup = dup;
 		setLayout(new BorderLayout()); 
-		
+
 		String[] kolone = {"ID", "Naziv Usluge"};
 		tableModel = new DefaultTableModel(kolone, 0); 
 		tabela = new JTable(tableModel);
-		
+
 		osveziTabelu();
-		
+
 		JScrollPane scrollPane = new JScrollPane(tabela);
 		add(scrollPane, BorderLayout.CENTER); 
-		
+
 		JPanel panelDugmici = new JPanel();
 		JButton btnDodaj = new JButton("Dodaj");
 		JButton btnIzmeni = new JButton("Izmeni");
 		JButton btnObrisi = new JButton("Obriši");
-		
+
 		panelDugmici.add(btnDodaj);
 		panelDugmici.add(btnIzmeni);
 		panelDugmici.add(btnObrisi);
 		add(panelDugmici, BorderLayout.SOUTH);
-		
+
 		btnDodaj.addActionListener(e -> {
 			UslugaForma uf = new UslugaForma(dup, null, this::osveziTabelu);
 			uf.setVisible(true); 
 		});
-		
+
 		btnIzmeni.addActionListener(e -> {
 			int selektovaniRed = tabela.getSelectedRow();
 			if (selektovaniRed == -1) {
 				javax.swing.JOptionPane.showMessageDialog(this, "Morate prvo selektovati uslugu iz tabele!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			
+
 			int idUsluge = (int) tableModel.getValueAt(selektovaniRed, 0);
 			DodatnaUsluga zaIzmenu = dup.pronadjiUslugu(idUsluge);
-			
+
 			if (zaIzmenu != null) {
 				UslugaForma uf = new UslugaForma(dup, zaIzmenu, this::osveziTabelu);
 				uf.setVisible(true);
 			}
 		});
-		
+
 		btnObrisi.addActionListener(e -> {
 			int selektovaniRed = tabela.getSelectedRow();
 			if (selektovaniRed == -1) {
 				javax.swing.JOptionPane.showMessageDialog(this, "Morate prvo selektovati uslugu iz tabele!", "Upozorenje", javax.swing.JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			
+
 			int idUsluge = (int) tableModel.getValueAt(selektovaniRed, 0);
 			DodatnaUsluga zaBrisanje = dup.pronadjiUslugu(idUsluge);
-			
+
 			if (zaBrisanje != null) {
 				Object[] opcije = {"Da", "Ne"};
 				int potvrda = javax.swing.JOptionPane.showOptionDialog(this,
@@ -87,7 +87,7 @@ public class UslugePanel extends JPanel {
 			}
 		});
 	}
-	
+
 	private void osveziTabelu() {
 		tableModel.setRowCount(0);
 		for (DodatnaUsluga du : dup.getUsluge()) {

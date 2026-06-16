@@ -22,7 +22,7 @@ public class KlijentPretplataPanel extends JPanel {
 
 	private PretplatePodaci pp;
 	private Klijent klijent;
-	
+
 	private JLabel lblNaslov;
 	private JLabel lblStatus;
 	private JLabel lblIstek;
@@ -31,40 +31,40 @@ public class KlijentPretplataPanel extends JPanel {
 	public KlijentPretplataPanel(PretplatePodaci pp, Klijent klijent) {
 		this.pp = pp;
 		this.klijent = klijent;
-		
+
 		setLayout(new BorderLayout());
-		
+
 		JPanel centerPanel = new JPanel(new java.awt.GridBagLayout());
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.insets = new java.awt.Insets(10, 10, 10, 10);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		
+
 		lblNaslov = new JLabel("Status Vaše Pretplate", SwingConstants.CENTER);
 		centerPanel.add(lblNaslov, gbc);
-		
+
 		gbc.gridy++;
 		lblStatus = new JLabel("", SwingConstants.CENTER);
 		centerPanel.add(lblStatus, gbc);
-		
+
 		gbc.gridy++;
 		lblIstek = new JLabel("", SwingConstants.CENTER);
 		centerPanel.add(lblIstek, gbc);
-		
+
 		gbc.gridy++;
 		btnPodnesi = new JButton("Podnesi zahtev za novu pretplatu");
 		centerPanel.add(btnPodnesi, gbc);
-		
+
 		add(centerPanel, BorderLayout.CENTER);
-		
+
 		btnPodnesi.addActionListener(e -> podnesiZahtev());
-		
+
 		osveziPrikaz();
 	}
-	
+
 	private void osveziPrikaz() {
 		Pretplata p = pp.pronadjiPretplatuZaKlijenta(klijent.getId());
-		
+
 		if (p == null) {
 			lblStatus.setText("Trenutno nemate aktivnu pretplatu.");
 			lblIstek.setText(" ");
@@ -72,7 +72,7 @@ public class KlijentPretplataPanel extends JPanel {
 		} else {
 			lblStatus.setText("Status: " + p.getStatus());
 			lblIstek.setText("Važi do: " + p.getDatumIsteka());
-			
+
 			if (p.getStatus() == korisnici.StatusPretplate.AKTIVNA || p.getStatus() == korisnici.StatusPretplate.CEKA_ODOBRENJE) {
 				btnPodnesi.setEnabled(false);
 			} else {
@@ -80,7 +80,7 @@ public class KlijentPretplataPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	private void podnesiZahtev() {
 		Object[] opcije = {"Da", "Ne"};
 		int odziv = JOptionPane.showOptionDialog(this, 
@@ -92,10 +92,10 @@ public class KlijentPretplataPanel extends JPanel {
 			opcije, 
 			opcije[0]
 		);
-		
+
 		if (odziv == 0) {
 			pp.podnesiZahtevZaPretplatu(klijent);
-			
+
 			korisnici.Pretplata azurirana = pp.pronadjiPretplatuZaKlijenta(klijent.getId());
 			if (azurirana != null && azurirana.getStatus() == korisnici.StatusPretplate.ODBIJENA) {
 				JOptionPane.showMessageDialog(this, "Vaš zahtev je AUTOMATSKI ODBIJEN zbog prevelikog broja kašnjenja (" + klijent.getBrojKasnjenja() + ")!", "Zahtev odbijen", JOptionPane.ERROR_MESSAGE);

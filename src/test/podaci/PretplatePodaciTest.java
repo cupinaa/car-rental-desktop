@@ -27,7 +27,7 @@ public class PretplatePodaciTest {
 		pp = new PretplatePodaci() {
 			@Override
 			public void sacuvajIzmene() {
-				// Ne radimo nista
+
 			}
 		};
 	}
@@ -42,9 +42,9 @@ public class PretplatePodaciTest {
 		int pocetnaVelicina = pp.getPretplate().size();
 		Klijent k = new Klijent(1, "A", "B", Pol.Muski, LocalDate.now(), "1", "A", "user", "pass", LocalDate.now());
 		Pretplata p = new Pretplata(k, LocalDate.now().plusMonths(1), StatusPretplate.AKTIVNA);
-		
+
 		pp.dodajPretplatu(p);
-		
+
 		assertEquals("Broj pretplata mora se uvecati", pocetnaVelicina + 1, pp.getPretplate().size());
 		assertTrue("ID mora biti setovan", p.getId() > 0);
 	}
@@ -54,7 +54,7 @@ public class PretplatePodaciTest {
 		Klijent k = new Klijent(1, "A", "B", Pol.Muski, LocalDate.now(), "1", "A", "user", "pass", LocalDate.now());
 		Pretplata p = new Pretplata(k, LocalDate.now().plusMonths(1), StatusPretplate.AKTIVNA);
 		pp.dodajPretplatu(p);
-		
+
 		assertNotNull("Mora pronaci pretplatu po ID", pp.pronadjiPretplatu(p.getId()));
 		assertNotNull("Mora pronaci pretplatu po Klijentu", pp.pronadjiPretplatuZaKlijenta(k.getId()));
 	}
@@ -62,19 +62,19 @@ public class PretplatePodaciTest {
 	@Test
 	public void testPodnesiZahtevZaPretplatu() {
 		Klijent k1 = new Klijent(1, "A", "B", Pol.Muski, LocalDate.now(), "1", "A", "user", "pass", LocalDate.now());
-		k1.setBrojKasnjenja(2); // Manje od 5
-		
+		k1.setBrojKasnjenja(2); 
+
 		pp.podnesiZahtevZaPretplatu(k1);
-		
+
 		Pretplata p1 = pp.pronadjiPretplatuZaKlijenta(k1.getId());
 		assertNotNull("Pretplata za prvog mora biti kreirana", p1);
 		assertEquals("Status mora biti CEKA_ODOBRENJE posto ima malo kasnjenja", StatusPretplate.CEKA_ODOBRENJE, p1.getStatus());
-		
+
 		Klijent k2 = new Klijent(2, "C", "D", Pol.Muski, LocalDate.now(), "1", "A", "user2", "pass", LocalDate.now());
-		k2.setBrojKasnjenja(6); // Vise od 5
-		
+		k2.setBrojKasnjenja(6); 
+
 		pp.podnesiZahtevZaPretplatu(k2);
-		
+
 		Pretplata p2 = pp.pronadjiPretplatuZaKlijenta(k2.getId());
 		assertNotNull("Pretplata za drugog mora biti kreirana", p2);
 		assertEquals("Status mora biti ODBIJENA zbog previse kasnjenja", StatusPretplate.ODBIJENA, p2.getStatus());
@@ -82,7 +82,7 @@ public class PretplatePodaciTest {
 
 	@Test
 	public void testUcitajUpisi() throws IOException {
-		// Preskačemo detaljni test zbog relacija ka Korisnicima (ucitavanje klijenta)
+
 		assertTrue(true);
 	}
 }

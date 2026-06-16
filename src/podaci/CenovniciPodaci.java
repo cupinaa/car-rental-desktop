@@ -56,7 +56,7 @@ public class CenovniciPodaci {
 			}
 		}
 		brS.close();
-		
+
 		try {
 			BufferedReader brU = new BufferedReader(new FileReader(putStavkeUsluga));
 			while ((linija = brU.readLine()) != null) {
@@ -72,7 +72,7 @@ public class CenovniciPodaci {
 			}
 			brU.close();
 		} catch (Exception e) {
-			// Fajl jos ne postoji ili je prazan
+
 		}
 	}
 
@@ -117,7 +117,7 @@ public class CenovniciPodaci {
 		return null;
 
 	}
-	
+
 	private int generisiNoviId() {
 		int maxId = 0;
 		for (Cenovnik c : cenovnici) {
@@ -142,7 +142,7 @@ public class CenovniciPodaci {
 
 	public void dodajCenovnik(Cenovnik c) {
 		c.setId(generisiNoviId());
-		
+
 		int globalStavkaId = generisiNoviIdStavkeGlobal();
 		for(StavkaCenovnika sc : c.getStavkeCenovnika()) {
 			sc.setId(globalStavkaId++);

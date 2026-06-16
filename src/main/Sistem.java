@@ -13,7 +13,7 @@ import podaci.VozilaPodaci;
 import gui.LoginProzor;
 
 public class Sistem {
-    
+
     private KorisniciPodaci kp;
     private ModeliVozilaPodaci mp;
     private VozilaPodaci vp;
@@ -39,13 +39,13 @@ public class Sistem {
             kp.ucitaj("korisnici.csv");
             mp.ucitaj("modeli.csv");
             dup.ucitaj("dodatne_usluge.csv");
-            
+
             vp.ucitaj("vozila.csv", mp);
             cp.ucitaj("cenovnici.csv", "stavke_cenovnika.csv", "stavke_usluga_cenovnika.csv");
             rp.ucitaj("rezervacije.csv", kp, vp, dup);
             ip.ucitaj("izdavanja.csv", rp, kp);
             pp.ucitaj("pretplate.csv", kp);
-            
+
             LoginProzor login = new LoginProzor(kp, mp, vp, dup, cp, rp, ip, pp);
             login.setVisible(true);
 

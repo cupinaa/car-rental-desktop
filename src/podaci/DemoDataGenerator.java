@@ -45,7 +45,7 @@ public class DemoDataGenerator {
             IzdavanjePodaci ip = new IzdavanjePodaci();
             ip.getIzdavanja().clear();
 
-            // 1. KORISNICI
+
             Administrator admin = new Administrator(1, "Admin", "Adminovic", Pol.Muski, LocalDate.of(1980, 1, 1), "060111111", "Adresa 1", "admin", "admin", korisnici.StrucnaSprema.VSS, 10, 100000);
             kp.getKorisnici().add(admin);
 
@@ -68,7 +68,7 @@ public class DemoDataGenerator {
             kObican.setBrojKasnjenja(6);
             kp.getKorisnici().add(kObican);
 
-            // 2. MODELI I VOZILA
+
             ModelVozila m1 = new ModelVozila(1, "Skoda", "Octavia", KategorijaVozila.STANDARD);
             mp.getModeli().add(m1);
 
@@ -86,11 +86,11 @@ public class DemoDataGenerator {
 
             Vozilo v3 = new Vozilo(3, m3, "NI-789-CC", StatusVozila.RASPOLOZIVO);
             vp.getVozila().add(v3);
-            
+
             Vozilo v4 = new Vozilo(4, m2, "BG-999-DD", StatusVozila.RASPOLOZIVO);
             vp.getVozila().add(v4);
 
-            // 3. DODATNE USLUGE
+
             DodatnaUsluga du1 = new DodatnaUsluga(1, "GPS Navigacija");
             dup.getUsluge().add(du1);
 
@@ -100,7 +100,7 @@ public class DemoDataGenerator {
             DodatnaUsluga du3 = new DodatnaUsluga(3, "Produzeno Koriscenje");
             dup.getUsluge().add(du3);
 
-            // 4. CENOVNIK
+
             ArrayList<StavkaCenovnika> stavke = new ArrayList<>();
             stavke.add(new StavkaCenovnika(1, KategorijaVozila.ECONOMY, 2000));
             stavke.add(new StavkaCenovnika(2, KategorijaVozila.STANDARD, 4000));
@@ -115,7 +115,7 @@ public class DemoDataGenerator {
             Cenovnik c1 = new Cenovnik(1, LocalDate.now().minusYears(1).minusDays(1), LocalDate.now().plusYears(1), stavke, 15000.0, 0.1, 0.2, 0.3, 5000.0, ceneUsluga);
             cp.getCenovnici().add(c1);
 
-            // 5. PRETPLATE
+
             Pretplata p1 = new Pretplata(1, kStudent, LocalDate.now().plusMonths(6), StatusPretplate.AKTIVNA);
             pp.getPretplate().add(p1);
 
@@ -124,13 +124,13 @@ public class DemoDataGenerator {
 
             Pretplata p3 = new Pretplata(3, kPenzioner, LocalDate.now().plusMonths(2), StatusPretplate.AKTIVNA);
             pp.getPretplate().add(p3);
-            
-            // 6. ISTORIJA
+
+
             int[] monthsAgo = {11, 10, 8, 6, 5, 3, 2, 1};
             Klijent[] klis = {kStudent, kFirma, kPenzioner, kObican};
             Vozilo[] vozs = {v1, v2, v3, v4};
             Agent[] agents = {agentAna, agentMarko};
-            
+
             int rezId = 1;
             int izdId = 1;
 
@@ -138,27 +138,27 @@ public class DemoDataGenerator {
                 Klijent k = klis[i % 4];
                 Vozilo v = vozs[i % 4];
                 Agent a = agents[i % 2];
-                
+
                 int mAgo = monthsAgo[i % monthsAgo.length];
                 LocalDate start = LocalDate.now().minusMonths(mAgo).minusDays(i % 15);
                 LocalDate end = start.plusDays(3);
-                
+
                 ArrayList<DodatnaUsluga> usluge = new ArrayList<>();
                 if (i % 2 == 0) usluge.add(du1);
-                
+
                 double cena = 4000 * 3;
                 if (k.getKategorijaKlijenata() == KategorijaKlijenata.STUDENT) cena *= 0.9;
                 if (k.getKategorijaKlijenata() == KategorijaKlijenata.PENZIONER) cena *= 0.8;
                 if (k.getKategorijaKlijenata() == KategorijaKlijenata.FIRMA) cena *= 0.7;
                 if (i % 2 == 0) cena += 1000;
-                
+
                 Rezervacija r = new Rezervacija(rezId++, k, v, start, end, cena, StatusRezervacije.REALIZOVANA, usluge);
                 rp.getRezervacije().add(r);
-                
+
                 Izdavanje izd = new Izdavanje(izdId++, r, a, 100000, 100500);
                 ip.getIzdavanja().add(izd);
             }
-            
+
             LocalDate recent = LocalDate.now().minusDays(5);
             rp.getRezervacije().add(new Rezervacija(rezId++, kStudent, v2, recent, recent.plusDays(2), 2000, StatusRezervacije.OTKAZANA, new ArrayList<>()));
             rp.getRezervacije().add(new Rezervacija(rezId++, kPenzioner, v1, recent, recent.plusDays(2), 3000, StatusRezervacije.OTKAZANA, new ArrayList<>()));
@@ -176,7 +176,7 @@ public class DemoDataGenerator {
             pp.upisi("pretplate.csv");
             rp.upisi("rezervacije.csv");
             ip.upisi("izdavanja.csv");
-            
+
             System.out.println("USPESNO ZAVRSENO! Svi CSV fajlovi su kreirani.");
 
         } catch (Exception e) {
