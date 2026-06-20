@@ -1,4 +1,5 @@
 package gui;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -31,10 +32,10 @@ public class GlavniProzor extends JFrame {
 	private IzdavanjePodaci ip;
 	private PretplatePodaci pp;
 
-	private JPanel glavniSadrzaj; 
+	private JPanel glavniSadrzaj;
 
-	public GlavniProzor(Korisnik ulogovaniKorisnik, KorisniciPodaci kp, ModeliVozilaPodaci mp, VozilaPodaci vp, DodatneUslugePodaci dup,
-			CenovniciPodaci cp, RezervacijePodaci rp, IzdavanjePodaci ip, PretplatePodaci pp) {
+	public GlavniProzor(Korisnik ulogovaniKorisnik, KorisniciPodaci kp, ModeliVozilaPodaci mp, VozilaPodaci vp,
+			DodatneUslugePodaci dup, CenovniciPodaci cp, RezervacijePodaci rp, IzdavanjePodaci ip, PretplatePodaci pp) {
 
 		this.ulogovaniKorisnik = ulogovaniKorisnik;
 		this.kp = kp;
@@ -46,27 +47,27 @@ public class GlavniProzor extends JFrame {
 		this.ip = ip;
 		this.pp = pp;
 
-		setTitle("Rent-a-Car Sistem - Prijavljeni: " + ulogovaniKorisnik.getIme() + " " + ulogovaniKorisnik.getPrezime());
-		setSize(900, 600); 
+		setTitle("Rent-a-Car Sistem - Prijavljeni: " + ulogovaniKorisnik.getIme() + " "
+				+ ulogovaniKorisnik.getPrezime());
+		setSize(900, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-
 
 		glavniSadrzaj = new JPanel(new BorderLayout());
 		add(glavniSadrzaj, BorderLayout.CENTER);
 
-		JLabel lblDobrodosli = new JLabel("Dobrodošli u Rent-a-Car, " + ulogovaniKorisnik.getIme(), SwingConstants.CENTER);
+		JLabel lblDobrodosli = new JLabel("Dobrodošli u Rent-a-Car, " + ulogovaniKorisnik.getIme(),
+				SwingConstants.CENTER);
 		lblDobrodosli.setFont(new Font("Arial", Font.BOLD, 24));
-		glavniSadrzaj.add(lblDobrodosli, BorderLayout.CENTER); 
+		glavniSadrzaj.add(lblDobrodosli, BorderLayout.CENTER);
 
 		kreirajMeni();
 	}
 
-
 	private void prikaziPanel(JPanel noviPanel) {
 		glavniSadrzaj.removeAll();
 		glavniSadrzaj.add(noviPanel, BorderLayout.CENTER);
-		glavniSadrzaj.revalidate(); 
+		glavniSadrzaj.revalidate();
 		glavniSadrzaj.repaint();
 	}
 
@@ -78,31 +79,38 @@ public class GlavniProzor extends JFrame {
 
 			JMenuItem korisniciItem = new JMenuItem("Zaposleni");
 			korisniciItem.addActionListener(e -> {
-				KorisniciPanel kpPanel = new KorisniciPanel(kp, ulogovaniKorisnik);
+				KorisniciPanel kpPanel = new KorisniciPanel(kp, ulogovaniKorisnik, false);
 				prikaziPanel(kpPanel);
 			});
 			adminMenu.add(korisniciItem);
 
-			JMenuItem izvestajiItem = new JMenuItem("Izveštaji");
-			izvestajiItem.addActionListener(e -> {
-				IzvestajiPanel izp = new IzvestajiPanel(ip, rp, mp, kp, pp, cp);
-				prikaziPanel(izp);
+			JMenuItem klijentiItem = new JMenuItem("Klijenti");
+			klijentiItem.addActionListener(e -> {
+				KorisniciPanel kPanel = new KorisniciPanel(kp, ulogovaniKorisnik, true);
+				prikaziPanel(kPanel);
 			});
-			adminMenu.add(izvestajiItem);
+			adminMenu.add(klijentiItem);
 
-			JMenuItem grafikoniItem = new JMenuItem("Grafikoni (XChart)");
-			grafikoniItem.addActionListener(e -> {
-				GrafikoniPanel gp = new GrafikoniPanel(ip, rp, pp, kp);
-				prikaziPanel(gp);
+			JMenuItem pretplateItem = new JMenuItem("Pretplate");
+			pretplateItem.addActionListener(e -> {
+				PretplatePanel ppPanel = new PretplatePanel(pp, ulogovaniKorisnik);
+				prikaziPanel(ppPanel);
 			});
-			adminMenu.add(grafikoniItem);
+			adminMenu.add(pretplateItem);
 
 			JMenuItem vozilaItem = new JMenuItem("Vozila");
 			vozilaItem.addActionListener(e -> {
-				VozilaPanel vpPanel = new VozilaPanel(vp, mp, ulogovaniKorisnik);
+				VozilaPanel vpPanel = new VozilaPanel(vp, mp, ulogovaniKorisnik, rp);
 				prikaziPanel(vpPanel);
 			});
 			adminMenu.add(vozilaItem);
+
+			JMenuItem modeliItem = new JMenuItem("Modeli vozila");
+			modeliItem.addActionListener(e -> {
+				ModeliPanel mpPanel = new ModeliPanel(mp);
+				prikaziPanel(mpPanel);
+			});
+			adminMenu.add(modeliItem);
 
 			JMenuItem uslugeItem = new JMenuItem("Dodatne Usluge");
 			uslugeItem.addActionListener(e -> {
@@ -111,12 +119,41 @@ public class GlavniProzor extends JFrame {
 			});
 			adminMenu.add(uslugeItem);
 
+			JMenuItem rezervacijeItem = new JMenuItem("Rezervacije");
+			rezervacijeItem.addActionListener(e -> {
+				RezervacijePanel rpPanel = new RezervacijePanel(rp, ulogovaniKorisnik);
+				prikaziPanel(rpPanel);
+			});
+			adminMenu.add(rezervacijeItem);
+
+			JMenuItem izdavanjaItem = new JMenuItem("Izdavanja");
+			izdavanjaItem.addActionListener(e -> {
+				IzdavanjaAdminPanel ipPanel = new IzdavanjaAdminPanel(ip);
+				prikaziPanel(ipPanel);
+			});
+			adminMenu.add(izdavanjaItem);
+
+			menuBar.add(adminMenu);
 			JMenuItem cenovniciItem = new JMenuItem("Cenovnici");
 			cenovniciItem.addActionListener(e -> {
 				CenovnikPanel cpPanel = new CenovnikPanel(cp, dup);
 				prikaziPanel(cpPanel);
 			});
 			adminMenu.add(cenovniciItem);
+
+			JMenuItem izvestajiItem = new JMenuItem("Izveštaji");
+			izvestajiItem.addActionListener(e -> {
+				IzvestajiPanel izp = new IzvestajiPanel(ip, rp, mp, kp, pp, cp);
+				prikaziPanel(izp);
+			});
+			adminMenu.add(izvestajiItem);
+
+			JMenuItem grafikoniItem = new JMenuItem("Grafikoni");
+			grafikoniItem.addActionListener(e -> {
+				GrafikoniPanel gp = new GrafikoniPanel(ip, rp, pp, kp);
+				prikaziPanel(gp);
+			});
+			adminMenu.add(grafikoniItem);
 
 			JMenuItem podesavanjaItem = new JMenuItem("Podešavanja");
 			podesavanjaItem.addActionListener(e -> {
@@ -127,28 +164,35 @@ public class GlavniProzor extends JFrame {
 			});
 			adminMenu.add(podesavanjaItem);
 
-			menuBar.add(adminMenu);
-
 		} else if (ulogovaniKorisnik instanceof Agent) {
 			JMenu agentMenu = new JMenu("Radna tabla (Agent)");
 
 			JMenuItem klijentiItem = new JMenuItem("Klijenti");
 			klijentiItem.addActionListener(e -> {
-				KorisniciPanel kpPanel = new KorisniciPanel(kp, ulogovaniKorisnik);
+				KorisniciPanel kpPanel = new KorisniciPanel(kp, ulogovaniKorisnik, true);
 				prikaziPanel(kpPanel);
 			});
 			agentMenu.add(klijentiItem);
 
 			JMenuItem pretplateItem = new JMenuItem("Pretplate");
 			pretplateItem.addActionListener(e -> {
-				PretplatePanel ppPanel = new PretplatePanel(pp);
+				PretplatePanel ppPanel = new PretplatePanel(pp, ulogovaniKorisnik);
 				prikaziPanel(ppPanel);
 			});
 			agentMenu.add(pretplateItem);
+			
+			JMenuItem vozilaItem = new JMenuItem("Vozila");
+			vozilaItem.addActionListener(e -> {
+				VozilaPanel vpPanel = new VozilaPanel(vp, mp, ulogovaniKorisnik, rp);
+				prikaziPanel(vpPanel);
+			});
+			agentMenu.add(vozilaItem);
+
+			menuBar.add(agentMenu);
 
 			JMenuItem rezervacijeItem = new JMenuItem("Rezervacije");
 			rezervacijeItem.addActionListener(e -> {
-				RezervacijePanel rpPanel = new RezervacijePanel(rp);
+				RezervacijePanel rpPanel = new RezervacijePanel(rp, ulogovaniKorisnik);
 				prikaziPanel(rpPanel);
 			});
 			agentMenu.add(rezervacijeItem);
@@ -167,28 +211,23 @@ public class GlavniProzor extends JFrame {
 			});
 			agentMenu.add(vracanjeItem);
 
-			JMenuItem vozilaItem = new JMenuItem("Vozila");
-			vozilaItem.addActionListener(e -> {
-				VozilaPanel vpPanel = new VozilaPanel(vp, mp, ulogovaniKorisnik);
-				prikaziPanel(vpPanel);
-			});
-			agentMenu.add(vozilaItem);
 
-			menuBar.add(agentMenu);
 
 		} else if (ulogovaniKorisnik instanceof Klijent) {
 			JMenu klijentMenu = new JMenu("Klijentski Portal");
 
 			JMenuItem novaRezItem = new JMenuItem("Nova Rezervacija");
 			novaRezItem.addActionListener(e -> {
-				KlijentRezervacijaPanel krp = new KlijentRezervacijaPanel(rp, mp, vp, dup, cp, pp, (Klijent) ulogovaniKorisnik);
+				KlijentRezervacijaPanel krp = new KlijentRezervacijaPanel(rp, mp, vp, dup, cp, pp,
+						(Klijent) ulogovaniKorisnik);
 				prikaziPanel(krp);
 			});
 			klijentMenu.add(novaRezItem);
 
 			JMenuItem mojeRezItem = new JMenuItem("Moje Rezervacije");
 			mojeRezItem.addActionListener(e -> {
-				KlijentMojeRezervacijePanel kmrp = new KlijentMojeRezervacijePanel(rp, kp, cp, (Klijent) ulogovaniKorisnik);
+				KlijentMojeRezervacijePanel kmrp = new KlijentMojeRezervacijePanel(rp, kp, cp,
+						(Klijent) ulogovaniKorisnik);
 				prikaziPanel(kmrp);
 			});
 			klijentMenu.add(mojeRezItem);

@@ -40,7 +40,7 @@ public class KorisnikForma extends JDialog {
 	private JComboBox<String> cbKategorija;
 
 
-	public KorisnikForma(KorisniciPodaci kp, Korisnik kZaIzmenu, Runnable naUspesnoDodavanje, Korisnik ulogovaniKorisnik) {
+	public KorisnikForma(KorisniciPodaci kp, Korisnik kZaIzmenu, Runnable naUspesnoDodavanje, Korisnik ulogovaniKorisnik, boolean prikaziKlijente) {
 		this.kp = kp;
 		this.naUspesnoDodavanje = naUspesnoDodavanje;
 		this.kZaIzmenu = kZaIzmenu;
@@ -52,7 +52,7 @@ public class KorisnikForma extends JDialog {
 		setLayout(new GridLayout(16, 2, 5, 5));
 
 		add(new JLabel("Tip korisnika:"));
-		if (ulogovaniKorisnik instanceof Agent) {
+		if (ulogovaniKorisnik instanceof Agent || prikaziKlijente) {
 			cbTip = new JComboBox<>(new String[] {"Klijent"});
 		} else {
 			cbTip = new JComboBox<>(new String[] {"Agent", "Administrator"});

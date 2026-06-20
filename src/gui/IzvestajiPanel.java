@@ -107,7 +107,7 @@ public class IzvestajiPanel extends JPanel {
 			generisiPrihodeRashode(odDatuma, doDatuma);
 
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, "Neispravan format datuma. Koristite YYYY-MM-DD.", "Greška", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Neispravan format datuma. Koristite YYYY-MM-DD.", "GreĹˇka", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class IzvestajiPanel extends JPanel {
 					odbijene++; break;
 				case OTKAZANA:
 					otkazane++; break;
-				case NA_ČEKANJU:
+				case NA_CEKANJU:
 					naCekanju++; break;
 				}
 			}

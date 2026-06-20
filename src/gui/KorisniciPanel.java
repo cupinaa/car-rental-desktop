@@ -22,15 +22,17 @@ public class KorisniciPanel extends JPanel {
 	private DefaultTableModel tableModel;
 
 	private Korisnik ulogovaniKorisnik;
+	private boolean prikaziKlijente;
 
-	public KorisniciPanel(KorisniciPodaci kp, Korisnik ulogovaniKorisnik) {
+	public KorisniciPanel(KorisniciPodaci kp, Korisnik ulogovaniKorisnik, boolean prikaziKlijente) {
 		this.kp = kp;
 		this.ulogovaniKorisnik = ulogovaniKorisnik;
+		this.prikaziKlijente = prikaziKlijente;
 		setLayout(new BorderLayout()); 
 
 		String[] kolone;
-		if (ulogovaniKorisnik instanceof Agent) {
-			kolone = new String[]{"ID", "Ime", "Prezime", "E-mail", "Kategorija", "Zabrana do", "Datum Vozačke"};
+		if (prikaziKlijente) {
+			kolone = new String[]{"ID", "Ime", "Prezime", "E-mail", "Kategorija", "Zabrana do", "Datum Vozacke"};
 		} else {
 			kolone = new String[]{"ID", "Uloga", "Ime", "Prezime", "E-mail", "Plata"};
 		}
@@ -53,7 +55,7 @@ public class KorisniciPanel extends JPanel {
 		add(panelDugmici, BorderLayout.SOUTH);
 
 		btnDodaj.addActionListener(e -> {
-			KorisnikForma kf = new KorisnikForma(kp, null, () -> osveziTabelu(), ulogovaniKorisnik); 
+			KorisnikForma kf = new KorisnikForma(kp, null, () -> osveziTabelu(), ulogovaniKorisnik, prikaziKlijente); 
 			kf.setVisible(true); 
 		});
 
@@ -102,7 +104,7 @@ public class KorisniciPanel extends JPanel {
 
 			if (zaIzmenu != null) {
 
-				KorisnikForma kf = new KorisnikForma(kp, zaIzmenu, this::osveziTabelu, ulogovaniKorisnik);
+				KorisnikForma kf = new KorisnikForma(kp, zaIzmenu, this::osveziTabelu, ulogovaniKorisnik, prikaziKlijente);
 				kf.setVisible(true);
 			}
 		});
@@ -111,12 +113,12 @@ public class KorisniciPanel extends JPanel {
 	private void osveziTabelu() {
 		tableModel.setRowCount(0); 
 		for (Korisnik k : kp.getKorisnici()) {
-			if (ulogovaniKorisnik instanceof Agent && !(k instanceof Klijent)) continue;
-			if (ulogovaniKorisnik instanceof Administrator && (k instanceof Klijent)) continue;
+			if (prikaziKlijente && !(k instanceof Klijent)) continue;
+			if (!prikaziKlijente && (k instanceof Klijent)) continue;
 
 			String uloga = k.getClass().getSimpleName(); 
 
-			if (ulogovaniKorisnik instanceof Agent) {
+			if (prikaziKlijente) {
 				Klijent kl = (Klijent) k;
 				String kategorija = kl.getKategorijaKlijenata() != null ? kl.getKategorijaKlijenata().name() : "NEMA";
 				String zabrana = kl.getZabranaRezervisanjaDo() != null ? kl.getZabranaRezervisanjaDo().toString() : "-";

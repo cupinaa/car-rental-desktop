@@ -18,9 +18,11 @@ public class PretplatePanel extends JPanel {
 	private PretplatePodaci pp;
 	private JTable tabela;
 	private DefaultTableModel tableModel;
+	private korisnici.Korisnik ulogovaniKorisnik;
 
-	public PretplatePanel(PretplatePodaci pp) {
+	public PretplatePanel(PretplatePodaci pp, korisnici.Korisnik ulogovaniKorisnik) {
 		this.pp = pp;
+		this.ulogovaniKorisnik = ulogovaniKorisnik;
 		setLayout(new BorderLayout()); 
 
 		String[] kolone = {"ID", "Klijent", "Datum Isteka", "Status"};
@@ -42,6 +44,32 @@ public class PretplatePanel extends JPanel {
 
 		btnOdobri.addActionListener(e -> promeniStatus(StatusPretplate.AKTIVNA));
 		btnOdbij.addActionListener(e -> promeniStatus(StatusPretplate.ODBIJENA));
+
+		if (ulogovaniKorisnik instanceof korisnici.Administrator) {
+			JButton btnIzmeni = new JButton("Izmeni");
+			JButton btnObrisi = new JButton("Obrisi");
+			panelDugmici.add(btnIzmeni);
+			panelDugmici.add(btnObrisi);
+
+			btnIzmeni.addActionListener(e -> {
+				int red = tabela.getSelectedRow();
+				if (red == -1) { JOptionPane.showMessageDialog(this, "Odaberite pretplatu."); return; }
+				int id = (int) tableModel.getValueAt(red, 0);
+				Pretplata p = pp.pronadjiPretplatu(id);
+				if (p != null) { new PretplataForma(pp, p, this::osveziTabelu).setVisible(true); }
+			});
+
+			btnObrisi.addActionListener(e -> {
+				int red = tabela.getSelectedRow();
+				if (red == -1) { JOptionPane.showMessageDialog(this, "Odaberite pretplatu."); return; }
+				int id = (int) tableModel.getValueAt(red, 0);
+				Pretplata p = pp.pronadjiPretplatu(id);
+				if (p != null && JOptionPane.showConfirmDialog(this, "Sigurno?", "Potvrda", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					pp.getPretplate().remove(p);
+					try { pp.upisi("pretplate.csv"); osveziTabelu(); } catch (Exception ex) {}
+				}
+			});
+		}
 	}
 
 	private void promeniStatus(StatusPretplate noviStatus) {

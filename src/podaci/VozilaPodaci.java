@@ -59,11 +59,7 @@ public class VozilaPodaci {
     public void dodajVozilo(Vozilo v) {
         v.setId(generisiNoviId());
         vozila.add(v);
-        try {
-            upisi("vozila.csv");
-        } catch (IOException e) {
-            System.out.println("Greška pri upisu vozila: " + e.getMessage());
-        }
+        sacuvajIzmene();
     }
 
 
@@ -79,11 +75,7 @@ public class VozilaPodaci {
 
     public void obrisiVozilo(Vozilo v) {
         vozila.remove(v);
-        try {
-            upisi("vozila.csv");
-        } catch (IOException e) {
-            System.out.println("Greška pri brisanju vozila: " + e.getMessage());
-        }
+        sacuvajIzmene();
     }
 
     public void sacuvajIzmene() {

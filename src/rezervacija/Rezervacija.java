@@ -14,7 +14,7 @@ public class Rezervacija {
 	protected LocalDate datumPocetka;
 	protected LocalDate datumKraja;
 	protected double ukupnaCena;
-	protected StatusRezervacije statusRezervacije = StatusRezervacije.NA_ČEKANJU;
+	protected StatusRezervacije statusRezervacije = StatusRezervacije.NA_CEKANJU;
 
 
 	protected ArrayList<DodatnaUsluga> dodatneUsluge;

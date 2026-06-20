@@ -17,9 +17,11 @@ public class RezervacijePanel extends JPanel {
 	private RezervacijePodaci rp;
 	private JTable tabela;
 	private DefaultTableModel tableModel;
+	private korisnici.Korisnik ulogovaniKorisnik;
 
-	public RezervacijePanel(RezervacijePodaci rp) {
+	public RezervacijePanel(RezervacijePodaci rp, korisnici.Korisnik ulogovaniKorisnik) {
 		this.rp = rp;
+		this.ulogovaniKorisnik = ulogovaniKorisnik;
 		setLayout(new BorderLayout()); 
 
 		String[] kolone = {"ID", "Klijent", "Vozilo", "Od - Do", "Cena", "Status"};
@@ -41,6 +43,32 @@ public class RezervacijePanel extends JPanel {
 
 		btnOdobri.addActionListener(e -> promeniStatus(StatusRezervacije.ODOBRENA));
 		btnOdbij.addActionListener(e -> promeniStatus(StatusRezervacije.ODBIJENA));
+
+		if (ulogovaniKorisnik instanceof korisnici.Administrator) {
+			JButton btnIzmeni = new JButton("Izmeni");
+			JButton btnObrisi = new JButton("Obrisi");
+			panelDugmici.add(btnIzmeni);
+			panelDugmici.add(btnObrisi);
+
+			btnIzmeni.addActionListener(e -> {
+				int red = tabela.getSelectedRow();
+				if (red == -1) { JOptionPane.showMessageDialog(this, "Odaberite rezervaciju."); return; }
+				int id = (int) tableModel.getValueAt(red, 0);
+				Rezervacija r = rp.pronadjiRezervaciju(id);
+				if (r != null) { new RezervacijaForma(rp, r, this::osveziTabelu).setVisible(true); }
+			});
+
+			btnObrisi.addActionListener(e -> {
+				int red = tabela.getSelectedRow();
+				if (red == -1) { JOptionPane.showMessageDialog(this, "Odaberite rezervaciju."); return; }
+				int id = (int) tableModel.getValueAt(red, 0);
+				Rezervacija r = rp.pronadjiRezervaciju(id);
+				if (r != null && JOptionPane.showConfirmDialog(this, "Sigurno?", "Potvrda", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					rp.getRezervacije().remove(r);
+					try { rp.upisi("rezervacije.csv"); osveziTabelu(); } catch (Exception ex) {}
+				}
+			});
+		}
 	}
 
 	private void promeniStatus(StatusRezervacije noviStatus) {
@@ -54,15 +82,15 @@ public class RezervacijePanel extends JPanel {
 		Rezervacija r = rp.pronadjiRezervaciju(idRezervacije);
 
 		if (r != null) {
-			if (r.getStatusRezervacije() != StatusRezervacije.NA_ČEKANJU) {
-				JOptionPane.showMessageDialog(this, "Možete menjati status samo rezervacijama koje su na čekanju!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
+			if (r.getStatusRezervacije() != StatusRezervacije.NA_CEKANJU) {
+				JOptionPane.showMessageDialog(this, "MoĹľete menjati status samo rezervacijama koje su na ÄŤekanju!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 
 
 			if (noviStatus == StatusRezervacije.ODOBRENA) {
-				if (!rp.daLiJeVoziloSlobodno(r.getVozilo(), r.getDatumPocetka(), r.getDatumKraja())) {
-					JOptionPane.showMessageDialog(this, "Vozilo je već zauzeto u ovom terminu! Rezervacija se mora odbiti.", "Greška", JOptionPane.ERROR_MESSAGE);
+				if (!rp.daLiJeVoziloSlobodno(r.getVozilo(), r.getDatumPocetka(), r.getDatumKraja(), r.getId())) {
+					JOptionPane.showMessageDialog(this, "Vozilo je vec zauzeto u ovom terminu! Rezervacija se mora odbiti.", "Greska", JOptionPane.ERROR_MESSAGE);
 					rp.promeniStatusRezervacije(r, StatusRezervacije.ODBIJENA);
 					osveziTabelu();
 					return;
@@ -71,7 +99,7 @@ public class RezervacijePanel extends JPanel {
 
 			rp.promeniStatusRezervacije(r, noviStatus);
 			osveziTabelu();
-			JOptionPane.showMessageDialog(this, "Status rezervacije uspešno izmenjen u " + noviStatus + ".");
+			JOptionPane.showMessageDialog(this, "Status rezervacije uspeĹˇno izmenjen u " + noviStatus + ".");
 		}
 	}
 

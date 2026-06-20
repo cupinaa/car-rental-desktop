@@ -155,7 +155,7 @@ public class IzdavanjePanel extends JPanel {
 						if (!opcije.isEmpty()) {
 							JList<String> lista = new JList<>(opcije.toArray(new String[0]));
 							lista.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-							JOptionPane.showMessageDialog(this, new JScrollPane(lista), "Izaberite usluge (Držite CTRL za više)", JOptionPane.PLAIN_MESSAGE);
+							JOptionPane.showMessageDialog(this, new JScrollPane(lista), "Izaberite usluge", JOptionPane.PLAIN_MESSAGE);
 
 							int[] sel = lista.getSelectedIndices();
 							if (sel.length > 0) {

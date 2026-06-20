@@ -21,8 +21,9 @@ import javax.swing.table.JTableHeader;
 
 import korisnici.Klijent;
 import podaci.CenovniciPodaci;
-import podaci.KorisniciPodaci;
+
 import podaci.RezervacijePodaci;
+import podaci.KorisniciPodaci;
 import rezervacija.DodatnaUsluga;
 import rezervacija.Rezervacija;
 import rezervacija.StatusRezervacije;
@@ -45,7 +46,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 
 		setLayout(new BorderLayout()); 
 
-		String[] kolone = {"ID", "Vozilo", "Period", "Potrošeno na najam", "Potrošeno na usluge/kazne", "Ukupno za plaćanje", "Status"};
+		String[] kolone = {"ID", "Vozilo", "Period", "Potrošeno na najam", "Potrošeno na usluge", "Potrošeno na kazne", "Ukupno za plaćanje", "Status"};
 		tableModel = new DefaultTableModel(kolone, 0); 
 		tabela = new JTable(tableModel);
 
@@ -70,7 +71,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 			int idRezervacije = (int) tableModel.getValueAt(selektovaniRed, 0);
 			Rezervacija r = rp.pronadjiRezervaciju(idRezervacije);
 
-			if (r.getStatusRezervacije() == StatusRezervacije.NA_ČEKANJU || r.getStatusRezervacije() == StatusRezervacije.ODOBRENA) {
+			if (r.getStatusRezervacije() == StatusRezervacije.NA_CEKANJU || r.getStatusRezervacije() == StatusRezervacije.ODOBRENA) {
 				Object[] opcije = {"Da", "Ne"};
 				int potvrda = JOptionPane.showOptionDialog(this,
 						"Da li ste sigurni da želite da otkažete rezervaciju? (Bićete blokirani za nove rezervacije naredna 24h)",
@@ -91,7 +92,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 					osveziTabelu(); 
 				}
 			} else {
-				JOptionPane.showMessageDialog(this, "Možete otkazati samo rezervacije u statusu NA_ČEKANJU ili ODOBRENA.", "Greška", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Možete otkazati samo rezervacije u statusu NA_CEKANJU ili ODOBRENA.", "Greška", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}
@@ -122,7 +123,20 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 					}
 				}
 
-				double cenaNajma = r.getUkupnaCena() - cenaUsluga; 
+				double originalnaCena = 0;
+				if (cZaR != null) {
+					originalnaCena = rp.izracunajUkupnuCenu(r, cZaR);
+				} else {
+					originalnaCena = r.getUkupnaCena();
+				}
+
+				double kazna = r.getUkupnaCena() - originalnaCena;
+				if (kazna < 0 || r.getStatusRezervacije() != StatusRezervacije.REALIZOVANA) {
+					kazna = 0;
+				}
+
+				double cenaNajma = originalnaCena - cenaUsluga; 
+				if (cenaNajma < 0) cenaNajma = 0;
 
 				Object[] red = { 
 					r.getId(), 
@@ -130,6 +144,7 @@ public class KlijentMojeRezervacijePanel extends JPanel {
 					period, 
 					String.format("%.2f RSD", cenaNajma), 
 					String.format("%.2f RSD", cenaUsluga), 
+					String.format("%.2f RSD", kazna), 
 					String.format("%.2f RSD", r.getUkupnaCena()), 
 					r.getStatusRezervacije() 
 				};

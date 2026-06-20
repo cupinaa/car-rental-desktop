@@ -1,4 +1,5 @@
 package podaci;
+
 import java.time.LocalDateTime;
 
 import java.io.BufferedReader;
@@ -62,17 +63,15 @@ public class RezervacijePodaci {
 
 		boolean izmenjeno = false;
 		for (Rezervacija r : rezervacije) {
-			if (r.getStatusRezervacije() == StatusRezervacije.values()[0] && 
-				!r.getDatumPocetka().isAfter(LocalDate.now())) {
+			if (r.getStatusRezervacije() == StatusRezervacije.values()[0]
+					&& !r.getDatumPocetka().isAfter(LocalDate.now())) {
 				r.setStatusRezervacije(StatusRezervacije.ODBIJENA);
 				izmenjeno = true;
 			}
 
-
-			if (r.getStatusRezervacije() == StatusRezervacije.values()[4] &&
-				r.getDatumPocetka().isBefore(LocalDate.now())) {
+			if (r.getStatusRezervacije() == StatusRezervacije.values()[4]
+					&& r.getDatumPocetka().isBefore(LocalDate.now())) {
 				r.setStatusRezervacije(StatusRezervacije.OTKAZANA);
-
 
 				if (r.getKlijent() != null) {
 					r.getKlijent().setZabranaRezervisanjaDo(LocalDateTime.now().plusHours(24));
@@ -83,7 +82,7 @@ public class RezervacijePodaci {
 
 		if (izmenjeno) {
 			upisi(putanja);
-			kp.sacuvajIzmene(); 
+			kp.sacuvajIzmene();
 		}
 	}
 
@@ -106,10 +105,11 @@ public class RezervacijePodaci {
 	}
 
 	public Rezervacija pronadjiRezervaciju(int id) {
-	    for (Rezervacija r : rezervacije) {
-	        if (r.getId() == id) return r;
-	    }
-	    return null;
+		for (Rezervacija r : rezervacije) {
+			if (r.getId() == id)
+				return r;
+		}
+		return null;
 	}
 
 	private int generisiNoviId() {
@@ -142,8 +142,6 @@ public class RezervacijePodaci {
 			brojDana = 1;
 		}
 
-
-
 		double cenaPoDanu = 0.0;
 		KategorijaVozila katVozila = r.getVozilo().getModelVozila().getKategorija();
 
@@ -173,57 +171,67 @@ public class RezervacijePodaci {
 					ukupnaCena += (cenaUsluge * dodatniDani);
 				}
 			} else {
-				ukupnaCena += cenaUsluge; 
+				ukupnaCena += cenaUsluge;
 			}
 		}
 
 		if (r.getKlijent().getKategorijaKlijenata() != null) {
-		    switch (r.getKlijent().getKategorijaKlijenata()) {
-		        case STUDENT:
-		            ukupnaCena = ukupnaCena * (1.0 - aktuelni.getPopustStudent());
-		            break;
-		        case FIRMA:
-		            ukupnaCena = ukupnaCena * (1.0 - aktuelni.getPopustFirma());
-		            break;
-		        case PENZIONER:
-		            ukupnaCena = ukupnaCena * (1.0 - aktuelni.getPopustPenzioner());
-		            break;
-		    }
+			switch (r.getKlijent().getKategorijaKlijenata()) {
+			case STUDENT:
+				ukupnaCena = ukupnaCena * (1.0 - aktuelni.getPopustStudent());
+				break;
+			case FIRMA:
+				ukupnaCena = ukupnaCena * (1.0 - aktuelni.getPopustFirma());
+				break;
+			case PENZIONER:
+				ukupnaCena = ukupnaCena * (1.0 - aktuelni.getPopustPenzioner());
+				break;
+			}
 		}
 
 		return ukupnaCena;
 	}
 
 	public boolean daLiJeVoziloSlobodno(Vozilo v, LocalDate trazeniPocetak, LocalDate trazeniKraj) {
+		return daLiJeVoziloSlobodno(v, trazeniPocetak, trazeniKraj, -1);
+	}
+
+	public boolean daLiJeVoziloSlobodno(Vozilo v, LocalDate trazeniPocetak, LocalDate trazeniKraj,
+			int iskljuciIdRezervacije) {
 		for (Rezervacija r : rezervacije) {
+			if (r.getId() == iskljuciIdRezervacije) {
+				continue;
+			}
 			if (r.getVozilo() == null || r.getVozilo().getId() != v.getId()) {
 				continue;
 			}
 
-			if (r.getStatusRezervacije() == StatusRezervacije.OTKAZANA || 
-			    r.getStatusRezervacije() == StatusRezervacije.ODBIJENA) {
+			if (r.getStatusRezervacije() == StatusRezervacije.OTKAZANA
+					|| r.getStatusRezervacije() == StatusRezervacije.ODBIJENA) {
 				continue;
 			}
 
-			boolean preklapaSe = !trazeniPocetak.isAfter(r.getDatumKraja()) && !trazeniKraj.isBefore(r.getDatumPocetka());
+			boolean preklapaSe = !trazeniPocetak.isAfter(r.getDatumKraja())
+					&& !trazeniKraj.isBefore(r.getDatumPocetka());
 
 			if (preklapaSe) {
-				return false; 
+				return false;
 			}
 		}
 
-		return true; 
+		return true;
 	}
 
-	public Vozilo pronadjiSlobodnoVoziloZaModel(ModelVozila model, VozilaPodaci vp, LocalDate datumPocetka, LocalDate datumKraja) {
+	public Vozilo pronadjiSlobodnoVoziloZaModel(ModelVozila model, VozilaPodaci vp, LocalDate datumPocetka,
+			LocalDate datumKraja) {
 		for (Vozilo v : vp.getVozila()) {
 			if (v.getModelVozila().getId() == model.getId()) {
 				if (this.daLiJeVoziloSlobodno(v, datumPocetka, datumKraja)) {
-					return v; 
+					return v;
 				}
 			}
 		}
-		return null; 
+		return null;
 	}
 
 	public Rezervacija napraviRezervaciju(Klijent k, Vozilo v, LocalDate datumPocetka, LocalDate datumKraja,
@@ -263,8 +271,8 @@ public class RezervacijePodaci {
 	public double izracunajPrihode(LocalDate odDatuma, LocalDate doDatuma) {
 		double ukupniPrihodi = 0;
 		for (Rezervacija r : rezervacije) {
-			if (r.getStatusRezervacije() != StatusRezervacije.OTKAZANA && 
-				r.getStatusRezervacije() != StatusRezervacije.ODBIJENA) {
+			if (r.getStatusRezervacije() != StatusRezervacije.OTKAZANA
+					&& r.getStatusRezervacije() != StatusRezervacije.ODBIJENA) {
 
 				if (!r.getDatumPocetka().isBefore(odDatuma) && !r.getDatumPocetka().isAfter(doDatuma)) {
 					ukupniPrihodi += r.getUkupnaCena();
@@ -272,10 +280,6 @@ public class RezervacijePodaci {
 			}
 		}
 		return ukupniPrihodi;
-	}
-
-	public ArrayList<Rezervacija> getRezervacije() {
-		return rezervacije;
 	}
 
 	public void promeniStatusRezervacije(Rezervacija r, StatusRezervacije noviStatus) {
@@ -289,5 +293,9 @@ public class RezervacijePodaci {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public ArrayList<Rezervacija> getRezervacije() {
+		return rezervacije;
 	}
 }

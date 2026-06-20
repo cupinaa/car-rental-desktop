@@ -115,7 +115,9 @@ public class KorisniciPodaci {
 
 	public Agent pronadjiAgenta(int id) {
 	    for (Korisnik k : korisnici) {
-	        if (k instanceof Agent && k.getId() == id) return (Agent) k;
+	        if (k instanceof Agent && k.getId() == id) {
+	        	return (Agent) k;
+	        }
 	    }
 	    return null;
 	}
@@ -142,11 +144,7 @@ public class KorisniciPodaci {
 	public void dodajKorisnika(Korisnik k) {
 		k.setId(generisiNoviId());
 		korisnici.add(k);
-		try {
-			upisi("korisnici.csv");
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		sacuvajIzmene();
 	}
 
     private int generisiNoviId() {
@@ -161,11 +159,7 @@ public class KorisniciPodaci {
 
 	public void obrisiKorisnika(Korisnik k) {
 		korisnici.remove(k);
-		try {
-			upisi("korisnici.csv");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		sacuvajIzmene();
 	}
 
 	public void sacuvajIzmene() {

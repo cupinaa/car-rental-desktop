@@ -56,20 +56,12 @@ public class DodatneUslugePodaci {
     public void dodajUslugu(DodatnaUsluga du) {
         du.setId(generisiNoviId());
         usluge.add(du);
-        try {
-            upisi("dodatne_usluge.csv");
-        } catch (IOException e) {
-            System.out.println("Greška pri upisu usluga: " + e.getMessage());
-        }
+        sacuvajIzmene();
     }
 
     public void obrisiUslugu(DodatnaUsluga du) {
         usluge.remove(du);
-        try {
-            upisi("dodatne_usluge.csv");
-        } catch (IOException e) {
-            System.out.println("Greška pri brisanju usluga: " + e.getMessage());
-        }
+        sacuvajIzmene();
     }
 
     public void sacuvajIzmene() {
