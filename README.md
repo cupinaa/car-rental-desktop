@@ -2,6 +2,8 @@
 
 A role-based Java Swing application for managing a small car-rental operation with file-backed persistence, reservations, rentals, subscriptions, reporting, and charts.
 
+![Car Rental Desktop project banner](docs/images/car-rental-desktop-banner.png)
+
 ## Overview
 
 Car Rental Desktop demonstrates an end-to-end object-oriented desktop system for administrators, rental agents, and customers. It is intended as an educational reference and portfolio project for developers studying Java, Swing, persistence, and domain modeling.
