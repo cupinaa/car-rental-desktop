@@ -1,0 +1,13 @@
+ADMINISTRATOR|1|Alex|Admin|MALE|1985-01-15|555-0101|1 Demo Street|admin@example.test|demo-admin|BACHELORS|10|77000.0
+AGENT|2|Taylor|Agent|FEMALE|1990-05-05|555-0102|2 Demo Street|agent@example.test|demo-agent|HIGH_SCHOOL|5|51000.0
+AGENT|3|Morgan|Agent|MALE|1988-03-03|555-0103|3 Demo Street|agent2@example.test|demo-agent|MASTERS|8|91600.0
+CUSTOMER|4|Casey|Student|MALE|2002-01-01|555-0201|4 Demo Street|customer@example.test|demo-customer|2020-01-01|STUDENT|null|2
+CUSTOMER|5|Jordan|Retiree|FEMALE|1950-01-01|555-0202|5 Demo Street|retiree@example.test|demo-customer|1970-01-01|RETIREE|null|0
+CUSTOMER|6|Riley|Business|MALE|1980-01-01|555-0203|6 Demo Street|business@example.test|demo-customer|2000-01-01|COMPANY|null|0
+CUSTOMER|7|Avery|Standard|MALE|1990-01-01|555-0204|7 Demo Street|standard@example.test|demo-customer|2010-01-01|null|null|0
+CUSTOMER|8|Jamie|Student|FEMALE|1998-01-01|555-0205|8 Demo Street|student@example.test|demo-customer|2018-01-01|STUDENT|null|0
+CUSTOMER|9|Drew|Blocked|MALE|1995-01-01|555-0206|9 Demo Street|blocked@example.test|demo-customer|2015-01-01|null|2026-06-19T10:00|0
+CUSTOMER|10|Robin|Late|MALE|1985-01-01|555-0207|10 Demo Street|late@example.test|demo-customer|2005-01-01|COMPANY|null|6
+CUSTOMER|11|Skyler|NoSubscription|MALE|1999-01-01|555-0208|11 Demo Street|unsubscribed@example.test|demo-customer|2019-01-01|null|null|0
+CUSTOMER|12|Quinn|NewDriver|FEMALE|2000-01-01|555-0209|12 Demo Street|newdriver@example.test|demo-customer|2025-01-01|null|null|0
+CUSTOMER|13|Cameron|Business|MALE|1987-05-22|555-0210|13 Demo Street|company2@example.test|demo-customer|2007-06-22|COMPANY|null|0

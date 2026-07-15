@@ -1,1 +1,9 @@
 bin/
+build/
+.env
+*.log
+*.tmp
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
